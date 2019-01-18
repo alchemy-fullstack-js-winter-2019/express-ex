@@ -51,13 +51,16 @@ describe('tweets', () => {
   });
   it('gets a single tweet by id', () => {
     return createTweet('tyler')
-      .then(blah => {
+      .then(createdTweet => {
+        const _id = createdTweet._id;
         return request(app)
-          .get(`/tweets/${blah._id}`)
+          .get(`/tweets/${_id}`)
           .then(res => {
-            console.log('\n\n\n\n blahl id', blah._id);
-            console.log('\n\n\n\n res.body._id', res.body);
-            expect(res.body._id).toEqual(blah._id);
+            expect(res.body).toEqual({
+              handle: 'tyler',
+              text: 'my first tweet',
+              _id: _id
+            });
           });
       });
   });
