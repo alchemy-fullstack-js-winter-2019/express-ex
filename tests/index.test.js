@@ -1,4 +1,4 @@
-const Store = require('../lib/index');
+const Store = require('../lib/models/index');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
