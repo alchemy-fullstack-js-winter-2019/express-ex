@@ -3,6 +3,18 @@ const app = require('../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
+
+const testData =  handle => {
+  return request(app)
+    .post('/tweets')
+    .send({
+      handle,
+      text:'you have no idea'
+    })
+    .then(res => res.body);
+};
+
+
 describe('express server', () => {
   beforeEach(done => {
     rimraf('./data/tweets', err => {
@@ -28,7 +40,17 @@ describe('express server', () => {
         });
       });
   });
-  it('gets all the tweets', )
+  it('gets all the tweets', () => {
+    const tweetsToTest = ['tweet1', 'tweet2', 'tweet3'];
+    return Promise.all(tweetsToTest.map(testData))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      })  
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
+      });
+  });
 
 
 });
