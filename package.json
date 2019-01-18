@@ -1,0 +1,32 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "npm run test  --watch",
+    "lint": "eslint .",
+    "start": "nodemon express.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caripizza/express-ex.git"
+  },
+  "keywords": [],
+  "author": "Cari Palazzolo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caripizza/express-ex/issues"
+  },
+  "homepage": "https://github.com/caripizza/express-ex#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.4.1"
+  }
+}
