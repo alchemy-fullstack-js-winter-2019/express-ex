@@ -64,5 +64,21 @@ describe('tweets', () => {
           });
       });
   });
+  it('updates a tweet by id', () => {
+    return createTweet('tyler')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .put(`/tweets/${_id}`)
+          .send({ handle: 'tyler', text: 'revised tweet' })
+          .then(res => {
+            expect(res.body).toEqual({
+              handle: 'tyler',
+              text: 'revised tweet',
+              _id: _id
+            });
+          });
+      });
+  });
 });
 
