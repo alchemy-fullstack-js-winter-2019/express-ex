@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -19,9 +23,11 @@
   "homepage": "https://github.com/averagegalmarcy/express-ex#readme",
   "devDependencies": {
     "eslint": "^5.12.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "supertest": "^3.4.1"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9"
   }
 }
