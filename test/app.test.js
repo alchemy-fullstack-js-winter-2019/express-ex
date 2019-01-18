@@ -4,9 +4,14 @@ const app = require('../lib/app');
 describe('tweets', () => {
   it('gets a tweet', () => {
     return request(app)
-      .get('/tweets/abcd')
+      .post('/tweets')
+      .send({ handle: 'pizza', text: 'I am a tweet' })
       .then(res => {
-        expect(res.text).toEqual('abcd');
+        expect(res.body).toEqual({
+          handle: 'pizza',
+          text: 'I am a tweet',
+          _id: expect.any(String)
+        });
       });
   });
 });
