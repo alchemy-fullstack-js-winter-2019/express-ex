@@ -1,9 +1,5 @@
-const express = require('express');
-const app = express();
+const app = require('./lib/app');
 
-app.get('/', (req, res) => {
-  res.end('hi');
-});
 
 app.listen(7890, () => {
   console.log('running');
