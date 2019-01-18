@@ -8,7 +8,7 @@ const createTweet = (handle) => {
   return request(app)
     .post('/tweets')
     .send({
-      name: handle,
+      handle: handle,
       text: 'dogs are the best'
     })
     .then(res => res.body);
@@ -43,7 +43,39 @@ it('gets tweets by ID', () => {
       return request(app)
         .get(`/tweets/${id}`)
         .then(res => {
-          expect(res.body).toEqual({ text: 'dogs are the best', _id: expect.any(String) });
+          expect(res.body).toEqual({ handle: 'marcy1', text: 'dogs are the best', _id: expect.any(String) });
+        });
+    });
+});
+it('finds a tweet by ID and updates it', () => {
+  return createTweet('marcy1')
+    .then(personWhoWasCreated => {
+      const id = personWhoWasCreated._id;
+      const updatedObject = ({ handle: 'marcy2',
+        text: 'cats are better',
+        _id: expect.any(String)
+      });
+      return request(app) 
+        .put(`/tweets/${id}`)
+        .send(updatedObject)
+      /* eslint-disable-next-line*/
+          .then(res => {
+          expect(res.body).toEqual({
+            handle: 'marcy2',
+            text: 'cats are better',
+            _id: expect.any(String) 
+          });
+        });
+    });
+});
+it('deletes a tweet', () => {
+  return createTweet('marcy1')
+    .then(TweetWhoWasCreated => {
+      const id = TweetWhoWasCreated._id;
+      return request(app) 
+        .delete(`/tweets/${id}`)
+        .then(res => {
+          expect(res.status).toEqual(200);
         });
     });
 });
