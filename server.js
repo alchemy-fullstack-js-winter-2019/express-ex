@@ -1,3 +1,4 @@
+const app = require('./lib/app');
 
 const PORT = 7890 || process.env.PORT;
 
