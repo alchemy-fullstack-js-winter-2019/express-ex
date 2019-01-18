@@ -9,7 +9,7 @@ const makeTweet = (text) => {
     .post('/tweets')
     .send({
       handle: 'katerj',
-      tweet: text
+      text: text
     })
     .then(res => res.body);
 };
@@ -45,18 +45,39 @@ describe('tweets', () => {
   });
 
   it('gets a tweet by id', () => {
-    return request(app)
-      .post('/tweets')
-      .send({ 
-        handle: 'katerj', 
-        text: 'my first tweet'
+    return makeTweet('Weeee')
+      .then(newTweet => {
+        const id = newTweet._id;
+        return request(app)
+          .get(`/tweets/${id}`);
       })
       .then(res => {
         expect(res.body).toEqual({
           handle: 'katerj',
-          text: 'my first tweet',
+          text: 'Weeee',
           _id: expect.any(String)
         });
+      });
+  });
+
+  it('get a list of tweets', () => {
+    return Promise.all(['tweet 1', 'tweet 2', 'tweet 3'].map(tweet => {
+      makeTweet(tweet);
+    }))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
+      });
+  });
+
+  it('finds a tweet by id and updates', () => {
+    return makeTweet('tweet made')
+      .then(() => {
+        return request(app)
+          .put('/tweets/:id');
       });
   });
 
