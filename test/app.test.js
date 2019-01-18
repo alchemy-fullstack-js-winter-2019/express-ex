@@ -3,7 +3,7 @@ const rimraf = require('rimraf');
 const request = require('supertest');
 const app = require('../lib/app');
 
-const createTweet = (handle, text) => {
+const createTweet = (handle, text = 'hi I a tweet') => {
   return request(app)
     .post('/tweets')
     .send({
@@ -54,5 +54,20 @@ describe('tweets', () => {
         expect(body).toHaveLength(4);
       });
   });
-
+  // GET by id
+  it('gets a tweet by id', () => {
+    return createTweet('hayyyyyy')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .get(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              handle: 'hayyyyyy',
+              text: 'hi I a tweet',
+              _id
+            });
+          });
+      });
+  });
 });

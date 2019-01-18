@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "npm run test  --watch",
+    "test:watch": "jest --watch",
     "lint": "eslint .",
+    "pretest": "npm run lint",
     "start": "nodemon server.js"
   },
   "repository": {
