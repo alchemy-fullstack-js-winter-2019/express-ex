@@ -12,9 +12,13 @@
     "init": "^0.1.2",
     "jest": "^23.6.0",
     "nodemon": "^1.18.9",
+    "shortid": "^2.2.14",
     "supertest": "^3.4.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.3"
+  },
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch --verbose",
