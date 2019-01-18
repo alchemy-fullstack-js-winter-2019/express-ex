@@ -70,4 +70,22 @@ describe('tweets', () => {
           });
       });
   });
+
+  // PUT ------------------------------------------
+  it('updates a tweet with :id and returns the update', () => {
+    let newTweet = {
+      handle: 'hollllaaaa',
+      text: 'can you believe this *&#(*@???'
+    };
+    return createTweet('pizzatown')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .put(`/tweets/${_id}`)
+          .send(newTweet);
+      })
+      .then(res => {
+        expect(res.body.handle).toEqual('hollllaaaa');
+      });
+  });
 });
