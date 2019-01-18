@@ -4,11 +4,23 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
 describe('express server', () => {
-  it('creates a new tweets', () => {  
+  beforeEach(done => {
+    rimraf('./data/tweets', err => {
+      done(err);
+    });
+  });
+  beforeEach(done => {
+    mkdirp('./data/tweets', err => {
+      done(err);
+    });
+  });
+  
+  it('creates a new tweet', () => {  
     return request(app)
-      .post('/tweet')
+      .post('/tweets')
       .send({ handle: 'mike', text:'my 1st tweet' })
       .then(res => {
+        // console.log('banana', res);
         expect(res.body).toEqual({
           handle:'mike',
           text:'my 1st tweet',
@@ -16,6 +28,7 @@ describe('express server', () => {
         });
       });
   });
+  it('gets all the tweets', )
 
 
 });
