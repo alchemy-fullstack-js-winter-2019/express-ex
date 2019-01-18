@@ -1,0 +1,28 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "express.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crperezchica/express-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crperezchica/express-ex/issues"
+  },
+  "homepage": "https://github.com/crperezchica/express-ex#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.4.1"
+  },
+  "dependencies": {}
+}
