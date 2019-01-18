@@ -3,11 +3,11 @@ const app = require('../lib/app');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
-const createTweet = (name) => {
+const createTweet = (handle) => {
   return request(app)
     .post('/tweets')
     .send({
-      name: name,
+      handle: handle,
       text: 'my first tweet'
     })
     .then(res => res.body);
