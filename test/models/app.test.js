@@ -44,11 +44,19 @@ describe('tweets', () => {
       });
   });
 
-  it('gets a tweet', () => {
+  it('gets a tweet by id', () => {
     return request(app)
-      .get('/tweets/abcd')
+      .post('/tweets')
+      .send({ 
+        handle: 'katerj', 
+        text: 'my first tweet'
+      })
       .then(res => {
-        expect(res.body).toEqual('abcd');
+        expect(res.body).toEqual({
+          handle: 'katerj',
+          text: 'my first tweet',
+          _id: expect.any(String)
+        });
       });
   });
 
