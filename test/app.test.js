@@ -66,4 +66,37 @@ describe('tweets', () => {
       });
   });
 
+  it('can update a tweet', () => {
+    return createTweet('yolo420')
+      .then(({ body }) => {
+        return request(app)
+          .put(`/tweets/${body._id}`);
+      })
+      .then(({ body }) => {
+        return Promise.all([
+          Promise.resolve(body._id),
+          request(app)
+            .get(`/tweets/${body._id}`)
+        ]);
+      })
+      .then(([_id, { body }]) => {
+        expect(body).toEqual({
+          handle: 'yogurt420',
+          text: 'yolo!',
+          _id
+        });
+      });
+  });
+
+  it('can delete a tweet', () => {
+    return createTweet('rimrafin')
+      .then(({ body }) => {
+        return request(app)
+          .delete(`/tweets/${body._id}`);
+      })
+      .then(({ body }) => {
+        expect(body).toEqual({ deleted: 1 });
+      });
+  });
+
 });
