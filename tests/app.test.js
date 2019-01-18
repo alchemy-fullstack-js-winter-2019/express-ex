@@ -47,4 +47,40 @@ describe('tweets', () => {
       });
   });
 
+  it('gets a tweet by id', () => {
+    return createTweet('T_on_A')
+      .then(createdTweet => {
+        const id = createdTweet._id;
+        return request(app)
+          .get(`/tweets/${id}`);
+      })
+      .then(res => {
+        expect(res.body.handle).toEqual('T_on_A');
+      });
+  });
+  it('updates a tweet', () => {
+    return createTweet('TT')
+      .then(createdTweet => {
+        const id = createdTweet._id;
+        return request(app)
+          .put(`/tweets/${id}`)
+          .send({
+            handle: 'TA',
+            text: 'my TWEET',
+            _id: id
+          })
+          .then(() => {
+            return request(app)
+              .get(`/tweets/${id}`)
+              .then(res => {
+                expect(res.body).toEqual({
+                  handle: 'TA',
+                  text: 'my TWEET',
+                  _id: id
+                });
+              });
+          });
+      });
+  });
+
 });
