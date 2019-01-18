@@ -1,0 +1,23 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kristinhortsch/express-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kristinhortsch/express-ex/issues"
+  },
+  "homepage": "https://github.com/kristinhortsch/express-ex#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
