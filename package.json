@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "npm run test  --watch",
     "lint": "eslint .",
-    "start": "nodemon express.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
