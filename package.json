@@ -2,10 +2,10 @@
   "name": "express-ex",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest --verbose",
-    "start": "nodemon express.js",
+    "start": "nodemon server.js",
     "test:watch": "jest --watch --verbose",
     "lint": "eslint .",
     "pretest": "npm run lint"
@@ -23,10 +23,12 @@
   "homepage": "https://github.com/AaronD87/express-ex#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "shortid": "^2.2.14"
   },
   "devDependencies": {
     "eslint": "^5.12.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "supertest": "^3.4.1"
   }
 }
