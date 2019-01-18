@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/ajquintero/express-ex#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "shortid": "^2.2.14"
   },
   "devDependencies": {
     "eslint": "^5.12.1",
