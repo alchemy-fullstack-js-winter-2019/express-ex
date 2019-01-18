@@ -46,8 +46,19 @@ describe('tweets', () => {
           .get('/tweets');
       })
       .then(res => {
-        console.log('res.text\n\n\n\n\n', res.body);
         expect(res.body).toHaveLength(3);
+      });
+  });
+  it('gets a single tweet by id', () => {
+    return createTweet('tyler')
+      .then(blah => {
+        return request(app)
+          .get(`/tweets/${blah._id}`)
+          .then(res => {
+            console.log('\n\n\n\n blahl id', blah._id);
+            console.log('\n\n\n\n res.body._id', res.body);
+            expect(res.body._id).toEqual(blah._id);
+          });
       });
   });
 });
