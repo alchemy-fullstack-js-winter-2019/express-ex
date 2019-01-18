@@ -10,33 +10,52 @@ describe('tweets', () => {
       });
   });
 
-  it('creates a new tweet', () => {
-    return request(app)
-      .post('/tweets')
-      .send({ handle: 'abel', text: 'my first tweet' })
+  const createTweet = (name) => {
+    it('creates a new tweet', () => {
+      return request(app)
+        .post('/tweets')
+        .send({ handle: 'abel', text: 'my first tweet' })
+        .then(res => {
+          expect(res.body).toEqual({
+            handle: 'abel',
+            text: 'my first tweet',
+            _id: expect.any(String)
+          });
+        });
+
+  }
+  });
+
+  it('gets a tweet by id', () => {
+    return createTweet('abel1')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .get(`/tweets/${_id}`);
+      })
       .then(res => {
         expect(res.body).toEqual({
-          handle: 'abel',
-          text: 'my first tweet',
-          _id: expect.any(String)
+          handle: 'abel1',
+          text: 'hi tweet'
         });
       });
   });
 
-  it('gets tweets by id', () => {
-    // return request(app)
-    //   .get('/tweets/abcd/1234')
-    //   .then(res => {
-    //     expect(res.id).toEqual('id');
-    //   });
+  it('gets a list of tweets from db', () => {
+    const tweetsToCreate = ['hello', 'hola', 'shalom'];
+    return Promise.all(tweetsToCreate.map(createTweet))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      })
+      .then({ body }) () => {
+        expect(body).toHaveLength(3);
+      }
   });
-
-  it('puts tweets by id', () => {
-
-  });
-
+    
   it('can delete tweets by id', () => {
-
+    
   });
-
 });
+
+
