@@ -1,5 +1,6 @@
 const express = require('express');
+const app = express();
 
-const app = express()
-
-app.listen(7890);
+app.listen(7890, () => {
+  console.log('running');
+});
