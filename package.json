@@ -1,0 +1,33 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:watch": "jest --watch",
+    "start": "nodemon server.js",
+    "start:client": "node client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avanvalk/express-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avanvalk/express-ex/issues"
+  },
+  "homepage": "https://github.com/avanvalk/express-ex#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "express": "^4.16.4",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "superagent": "^4.1.0",
+    "supertest": "^3.4.1"
+  },
+  "dependencies": {
+    "shortid": "^2.2.14"
+  }
+}
