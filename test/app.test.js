@@ -50,4 +50,20 @@ describe('tweets', () => {
       });
   });
 
+  it('gets a tweet by id', () => {
+    return createTweet('boohbah')
+      .then(({ body }) => {
+        return request(app)
+          .get(`/tweets/${body._id}`);
+      })
+      .then(({ body }) => {
+        console.log(body._id);
+        expect(body).toEqual({
+          handle: 'boohbah',
+          text: 'oink tweet moo',
+          _id: expect.any(String)
+        });
+      });
+  });
+
 });
