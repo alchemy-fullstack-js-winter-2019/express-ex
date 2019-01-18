@@ -61,24 +61,14 @@ describe('tweets', () => {
   });
   it('updates a tweet with :id and returns the update', () => {
     return createTweet('kristin1')
-      .then((createdTweet) => {
-        const id = createdTweet._id;
-        const updatedTweet = {
-          handle: 'roxius',
-          tweet: 'some tweet'
-        };
+      .then(createdTweet => {
+        createdTweet.handle = 'test';
         return request(app)
-          .put(`/tweets/${id}`)
-          .send(updatedTweet)
-          .then(res => {
-            console.log(updatedTweet);
-            console.log(res.body);
-
-            expect(res.body).toEqual({
-              handle: 'roxius',
-              tweet: 'some tweet'
-            });
-          });
+          .put(`/tweets/${createdTweet._id}`)
+          .send(createdTweet);
+      })
+      .then(res => {
+        expect(res.text).toContain('test');
       });
   });
   it('deletes a tweet with :id and returns the delete count', () => {
