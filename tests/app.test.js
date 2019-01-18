@@ -80,5 +80,16 @@ describe('tweets', () => {
           });
       });
   });
+  it('delets a tweet by id', () => {
+    return createTweet('tyler')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .delete(`/tweets${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+      });
+  });
 });
 
