@@ -1,5 +1,7 @@
 const request = require('supertest');
 const app = require('../lib/app');
+const rimraf = require('rimraf');
+const mkdirp = require('mkdirp');
 
 const createTweet = (name) => {
   return request(app)
@@ -12,6 +14,18 @@ const createTweet = (name) => {
 };
 
 describe('tweets', () => {
+  beforeEach(done => {
+    rimraf('./data/tweets', err => {
+      done(err);
+    });
+  });
+
+  beforeEach(done => {
+    mkdirp('./data/tweets', err => {
+      done(err);
+    });
+  });
+
   it('posts a tweet', () => {
     return request(app)
       .post('/tweets')
@@ -32,6 +46,7 @@ describe('tweets', () => {
           .get('/tweets');
       })
       .then(res => {
+        console.log('res.text\n\n\n\n\n', res.body);
         expect(res.body).toHaveLength(3);
       });
   });
