@@ -57,4 +57,20 @@ describe('tags', () => {
         }
       }));
   });
+
+  it('gets a tag by id', () => {
+    let added = null;
+    return request(app)
+      .post('/tags')
+      .send({
+        name: '#jsforlife',
+        _id: 2
+      })
+      .then(res => {
+        added = res.body;
+        return request(app)
+          .get(`/tags/${added._id}`)
+          .then(resp => expect(resp.body).toEqual(added));
+      });
+  });
 });
