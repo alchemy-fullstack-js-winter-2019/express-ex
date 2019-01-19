@@ -38,7 +38,7 @@ describe('tags', () => {
         });
       });
   });
-  it('can list all the tweets in the database', () => {
+  it('can list all the tags in the database', () => {
     const names = ['#blessup', '#thisissolit', '#nofilter', '#ididntchoosethethuglifethethuglyfechoseme'];
     return Promise.all(names.map(createTag))
       .then(() => {
@@ -49,13 +49,13 @@ describe('tags', () => {
         expect(body).toHaveLength(4);
       });
   });
-  // it('gets a tweet by id', () => {
-  //   return request(app)
-  //     .get('/tweets/abcd')
-  //     .then(res => {
-  //       expect(res.text).toEqual('abcd');
-  //     });
-  // });
+  it('gets a tag by id', () => {
+    return request(app)
+      .get('/tags/abcd')
+      .then(res => {
+        expect(res.text).toEqual('abcd');
+      });
+  });
   // it('updates a tweet with :id and returns the update', () => {
   //   return createTweet('kristin1')
   //     .then(createdTweet => {
