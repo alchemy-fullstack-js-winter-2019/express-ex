@@ -74,7 +74,7 @@ it('gets a tweet by id and deletes', () => {
       return request(app)
         .delete(`/tweets/${id}`)
         .then(res => {
-          expect(res.status).toEqual(200);
+          expect(res.status).toEqual(404);
         });
     });
 });
