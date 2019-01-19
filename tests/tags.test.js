@@ -56,18 +56,18 @@ describe('tags', () => {
         expect(res.text).toEqual('abcd');
       });
   });
-  // it('updates a tweet with :id and returns the update', () => {
-  //   return createTweet('kristin1')
-  //     .then(createdTweet => {
-  //       createdTweet.handle = 'test';
-  //       return request(app)
-  //         .put(`/tweets/${createdTweet._id}`)
-  //         .send(createdTweet);
-  //     })
-  //     .then(res => {
-  //       expect(res.text).toContain('test');
-  //     });
-  // });
+  it('updates a tag with :id and returns the update', () => {
+    return createTag('#blessup')
+      .then(createdTag => {
+        createdTag.name = '#turntup';
+        return request(app)
+          .put(`/tags/${createdTag._id}`)
+          .send(createdTag);
+      })
+      .then(res => {
+        expect(res.body.name).toContain('#turntup');
+      });
+  });
   // it('deletes a tweet with :id and returns the delete count', () => {
   //   return createTweet('baller for lyfe')
   //     .then((createdTweet) => {
