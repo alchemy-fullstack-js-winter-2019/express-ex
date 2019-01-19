@@ -28,21 +28,6 @@ describe('tweets', () => {
       });
   });
 
-  it('posts a tweet', () => {
-    return request(app)
-      .post('/tweets')
-      .send({
-        handle: 'shabz2',
-        text: 'I am another twit',
-        _id: 2
-      })
-      .then(res => expect(res.body).toEqual({
-        handle: 'shabz2',
-        text: 'I am another twit',
-        _id: 2
-      }));
-  });
-
   it('deletes a tweet', () => {
     return request(app)
       .delete(`/tweets/${tweet._id}`)
@@ -61,6 +46,18 @@ describe('tweets', () => {
         handle: 'shabz',
         text: 'I meant tweet',
         _id:'1'
+      }));
+  });
+
+  it('gets all tweets', () => {
+    return request(app)
+      .get('/tweets')
+      .then(res => expect(res.body).toEqual({
+        1 : {
+          handle: 'shabz',
+          text: 'I am a twit',
+          _id:'1'
+        }
       }));
   });
 });
