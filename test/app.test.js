@@ -88,7 +88,7 @@ describe('tweets', () => {
       });
   });
   // GET by id
-  it('gets a tweet by id', () => {
+  it('can get a tweet by id', () => {
     return createTweet('hayyyyyy')
       .then(createdTweet => {
         const _id = createdTweet._id;
@@ -98,6 +98,20 @@ describe('tweets', () => {
             expect(res.body).toEqual({
               handle: 'hayyyyyy',
               text: 'hi I a tweet',
+              _id
+            });
+          });
+      });
+  });
+  it('can get a tag by id', () => {
+    return createTag('#carirules')
+      .then(createdTag => {
+        const _id = createdTag._id;
+        return request(app)
+          .get(`/tags/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              name: '#carirules',
               _id
             });
           });
