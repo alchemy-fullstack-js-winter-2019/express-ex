@@ -64,6 +64,7 @@ describe('tweets', () => {
         });
       });
   });
+
   // GET LIST ------------------------------------------
   it('can get a list of tweets from db', () => {
     const tweetsToCreate = ['hey', 'hi', 'hello', 'hola'];
@@ -87,6 +88,7 @@ describe('tweets', () => {
         expect(body).toHaveLength(4);
       });
   });
+
   // GET by id
   it('can get a tweet by id', () => {
     return createTweet('hayyyyyy')
@@ -119,7 +121,7 @@ describe('tweets', () => {
   });
 
   // PUT ------------------------------------------
-  it('updates a tweet with :id and returns the update', () => {
+  it('can retrieve a tweet by :id and return the updated tweet', () => {
     let newTweet = {
       handle: 'hollllaaaa',
       text: 'can you believe this *&#(*@???'
@@ -133,6 +135,21 @@ describe('tweets', () => {
       })
       .then(res => {
         expect(res.body.handle).toEqual('hollllaaaa');
+      });
+  });
+  it('can retrieve a tag by :id and return the updated tag', () => {
+    let newTag = {
+      name: '#yolo'
+    };
+    return createTag('#nevergonnaquit')
+      .then(createdTag => {
+        const _id = createdTag._id;
+        return request(app)
+          .put(`/tags/${_id}`)
+          .send(newTag);
+      })
+      .then(res => {
+        expect(res.body.name).toEqual('#yolo');
       });
   });
 
