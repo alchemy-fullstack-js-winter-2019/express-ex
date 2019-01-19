@@ -1,29 +1,25 @@
 const request = require('supertest');
 const app = require('../lib/app');
 
-describe('tweets', () => {
-  it('gets a tweet', () => {
+
+const createTweet = (handle) => {
+  it('creates a new tweet', () => {
     return request(app)
-      .get('/tweets/abcd')
-      .then(res => {
-        expect(res.text).toEqual('abcd');
-      });
+      .post('/tweets')
+      .send({
+        name: handle,
+        text: 'my first tweet' })
+      .then(res => res.body);
   });
 
-  const createTweet = (name) => {
-    it('creates a new tweet', () => {
+  describe('tweets', () => {
+    it('gets a tweet', () => {
       return request(app)
-        .post('/tweets')
-        .send({ handle: 'abel', text: 'my first tweet' })
+        .get('/tweets/abcd')
         .then(res => {
-          expect(res.body).toEqual({
-            handle: 'abel',
-            text: 'my first tweet',
-            _id: expect.any(String)
-          });
+          expect(res.text).toEqual('abcd');
         });
-
-  }
+    });
   });
 
   it('gets a tweet by id', () => {
@@ -41,21 +37,24 @@ describe('tweets', () => {
       });
   });
 
-  it('gets a list of tweets from db', () => {
+  it('gets a list of tweets', () => {
     const tweetsToCreate = ['hello', 'hola', 'shalom'];
     return Promise.all(tweetsToCreate.map(createTweet))
       .then(() => {
         return request(app)
-          .get('/tweets');
-      })
-      .then({ body }) () => {
-        expect(body).toHaveLength(3);
-      }
+          .get('/tweets')
+          .then(({ body }) => {
+            expect(body).toHaveLength(3);
+          });
+      });
   });
     
-  it('can delete tweets by id', () => {
-    
+  it('can send a tweet', () => {
+    return request(app)
+      .post('/tweets')
+      .send({ handle: 'abel', text: 'is this how i tweet' })
+      .then(res => {
+        expect(res.body).toEqual({ handle: 'abel', text: 'is this how i tweet', _id: expect.any(String) });
+      });
   });
-});
-
-
+};
