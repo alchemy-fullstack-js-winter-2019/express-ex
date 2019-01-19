@@ -9,8 +9,17 @@ const createTweet = (handle) => {
     .send({
       handle,
       text: 'oink tweet moo'
-    });
+    })
+    .then(res => res.body);
 };
+
+// const createHashtag = (name) => {
+//   return request(app)
+//     .post('/tweets')
+//     .send({
+//       name
+//     });
+// };
 
 describe('tweets', () => {
   beforeEach(done => {
@@ -38,6 +47,18 @@ describe('tweets', () => {
       });
   });
 
+  it('creates a new hashtag', () => {
+    return request(app)
+      .post('/tags')
+      .send({ name: '#yolo' })
+      .then(res => {
+        expect(res.body).toEqual({
+          name: '#yolo',
+          _id: expect.any(String)
+        });
+      });
+  });
+
   it('gets all the tweets', () => {
     const tweetsToCreate = ['yoyo', 'jelly123', 'jessie456'];
     return Promise.all(tweetsToCreate.map(createTweet))
@@ -52,47 +73,41 @@ describe('tweets', () => {
 
   it('gets a tweet by id', () => {
     return createTweet('boohbah')
-      .then(({ body }) => {
+      .then(res => {
         return request(app)
-          .get(`/tweets/${body._id}`);
-      })
-      .then(({ body }) => {
-        console.log(body._id);
-        expect(body).toEqual({
-          handle: 'boohbah',
-          text: 'oink tweet moo',
-          _id: expect.any(String)
-        });
+          .get(`/tweets/${res._id}`)
+          .then(({ body }) => {
+            expect(body).toEqual({
+              handle: 'boohbah',
+              text: 'oink tweet moo',
+              _id: expect.any(String)
+            });
+          });
       });
   });
 
-  it('can update a tweet', () => {
-    return createTweet('yolo420')
-      .then(({ body }) => {
+  it('updates a tweet with :id and returns the update', () => {
+    let newTweet = {
+      handle: 'hollllaaaa',
+      text: 'can you believe this *&#(*@???'
+    };
+    return createTweet('pizzatown')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
         return request(app)
-          .put(`/tweets/${body._id}`);
+          .put(`/tweets/${_id}`)
+          .send(newTweet);
       })
-      .then(({ body }) => {
-        return Promise.all([
-          Promise.resolve(body._id),
-          request(app)
-            .get(`/tweets/${body._id}`)
-        ]);
-      })
-      .then(([_id, { body }]) => {
-        expect(body).toEqual({
-          handle: 'yogurt420',
-          text: 'yolo!',
-          _id
-        });
+      .then(res => {
+        expect(res.body.handle).toEqual('hollllaaaa');
       });
   });
 
   it('can delete a tweet', () => {
     return createTweet('rimrafin')
-      .then(({ body }) => {
+      .then(res => {
         return request(app)
-          .delete(`/tweets/${body._id}`);
+          .delete(`/tweets/${res._id}`);
       })
       .then(({ body }) => {
         expect(body).toEqual({ deleted: 1 });
@@ -100,3 +115,4 @@ describe('tweets', () => {
   });
 
 });
+
