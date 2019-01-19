@@ -26,6 +26,8 @@
     "supertest": "^3.4.1"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.3"
   }
 }
