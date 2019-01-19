@@ -22,6 +22,8 @@
   "homepage": "https://github.com/ajquintero/express-ex#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.3",
     "shortid": "^2.2.14"
   },
   "devDependencies": {
