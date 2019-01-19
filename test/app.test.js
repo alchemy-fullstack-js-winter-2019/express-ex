@@ -29,10 +29,10 @@ describe('app tests', () => {
     it('creates a new tweet', () => {
       return request(app)
         .post('/tweets')
-        .send({ handle: 'ryan', text: 'my first tweet' })
+        .send({ handle: 'tweety', text: 'my first tweet' })
         .then(res => {
           expect(res.body).toEqual({
-            handle: 'ryan',
+            handle: 'tweety',
             text: 'my first tweet',
             _id: expect.any(String)
           });
@@ -58,6 +58,30 @@ describe('app tests', () => {
         })
         .then(({ body }) => {
           expect(body).toHaveLength(3);
+        });
+    });
+    it('gets a tweet and update', () => {
+      return createTweet('tweet tweet')
+        .then(createdTweet => {
+          const id = createdTweet._id;
+          return request(app)
+            .put(`/tweets/${id}`)
+            .send({
+              handle: 'tweet 5',
+              text: 'tweet back',
+              _id: id
+            })
+            .then(() => {
+              return request(app)
+                .get(`/tweets/${id}`)
+                .then(res => {
+                  expect(res.body).toEqual({
+                    handle: 'tweet 5',
+                    text: 'tweet back',
+                    _id: id
+                  });
+                });
+            });
         });
     });
   });
