@@ -9,7 +9,7 @@ describe('tweets', () => {
     } 
     else {
       request(app)
-        .del(`/tweets/${tweet._id}`)
+        .delete(`/tweets/${tweet._id}`)
         .then(() => done());
     }
   });
@@ -32,16 +32,22 @@ describe('tweets', () => {
     return request(app)
       .post('/tweets')
       .send({
-        handle: 'shabz',
-        text: 'I am a twit',
-        _id:'1'
+        handle: 'shabz2',
+        text: 'I am another twit',
+        _id: 2
       })
       .then(res => expect(res.body).toEqual({
-        handle: 'shabz',
-        text: 'I am a twit',
-        _id:'1'
+        handle: 'shabz2',
+        text: 'I am another twit',
+        _id: 2
       }));
   });
 
-
+  it('deletes a tweet', () => {
+    return request(app)
+      .delete(`/tweets/${tweet._id}`)
+      .then(res => expect(res.body).toEqual({
+        deleted: 1
+      }));
+  });
 });
