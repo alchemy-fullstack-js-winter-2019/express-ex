@@ -38,17 +38,17 @@ describe('tags', () => {
         });
       });
   });
-  // it('can list all the tweets in the database', () => {
-  //   const handles = ['roxy1', 'roxy2', 'roxy3', 'roxy4'];
-  //   return Promise.all(handles.map(createTweet))
-  //     .then(() => {
-  //       return request(app)
-  //         .get('/tweets');
-  //     })
-  //     .then(({ body }) => {
-  //       expect(body).toHaveLength(4);
-  //     });
-  // });
+  it('can list all the tweets in the database', () => {
+    const names = ['#blessup', '#thisissolit', '#nofilter', '#ididntchoosethethuglifethethuglyfechoseme'];
+    return Promise.all(names.map(createTag))
+      .then(() => {
+        return request(app)
+          .get('/tags');
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(4);
+      });
+  });
   // it('gets a tweet by id', () => {
   //   return request(app)
   //     .get('/tweets/abcd')
