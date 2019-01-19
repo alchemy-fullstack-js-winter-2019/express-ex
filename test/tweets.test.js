@@ -60,4 +60,21 @@ describe('tweets', () => {
         }
       }));
   });
+
+  it('gets a tweet by id', () => {
+    let added = null;
+    return request(app)
+      .post('/tweets')
+      .send({
+        handle: 'shabz2',
+        text: 'I am a twit also',
+        _id:'2'
+      })
+      .then(res => {
+        added = res.body;
+        return request(app)
+          .get(`/tweets/${added._id}`)
+          .then(resp => expect(resp.body).toEqual(added));
+      });
+  });
 });
