@@ -82,5 +82,29 @@ describe('tweets', () => {
           });
       });
   });
+  it('deletes a tweet', () => {
+    return createTweet('deletedTweet')
+      .then(createdTweet => {
+        const id = createdTweet._id;
+        return request(app)
+          .delete(`/tweets/${id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
+      });
+  });
+});
 
+describe('hashtags', () => {
+  beforeEach(done => {
+    rimraf('./data/tags', done);
+  });
+
+  beforeEach(done => {
+    mkdirp('./data/tags', done);
+  });
+  
+  it('posts a tag', () => {
+    
+  });
 });
