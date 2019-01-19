@@ -154,12 +154,23 @@ describe('tweets', () => {
   });
 
   // DELETE ------------------------------------------
-  it('can delete a tweet with :id and return the delete count', () => {
+  it('can retrieve a tag by :id, delete, and return the delete count', () => {
     return createTweet('alo')
       .then(createdTweet => {
         const _id = createdTweet._id;
         return request(app)
           .delete(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+      });
+  });
+  it('can retrieve a tag by :id, delete, and return the delete count', () => {
+    return createTag('#LivinMyBestLife')
+      .then(createdTag => {
+        const _id = createdTag._id;
+        return request(app)
+          .delete(`/tags/${_id}`)
           .then(res => {
             expect(res.body).toEqual({ deleted: 1 });
           });
