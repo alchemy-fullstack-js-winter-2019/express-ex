@@ -23,165 +23,164 @@ const createHashtag = (name) => {
 };
 
 describe('routes', () => {
-  describe.skip('tweets', () => {
-    beforeEach(done => {
-      mkdirp('./data/tweets', err => {
-        done(err);
-      });
-    }); 
-  
-    beforeEach(done => {
-      rimraf('./data/tweets', err => {
-        done(err);
-      });
-    });
-  
-    it('creates a new tweet', () => {
-      return request(app)
-        .post('/tweets')
-        .send({ handle: 'paige', text: 'TWEET' })
-        .then(res => {
-          expect(res.body).toEqual({
-            handle: 'paige',
-            text: 'TWEET',
-            _id: expect.any(String)
-          });
-        });
-    });
-  
-    it('gets all the tweets', () => {
-      const tweetsToCreate = ['yoyo', 'jelly123', 'jessie456'];
-      return Promise.all(tweetsToCreate.map(createTweet))
-        .then(() => {
-          return request(app)
-            .get('/tweets')
-            .then(({ body }) => {
-              expect(body).toHaveLength(3);
-            });
-        });
-    });
-  
-    it('gets a tweet by id', () => {
-      return createTweet('boohbah')
-        .then(res => {
-          return request(app)
-            .get(`/tweets/${res._id}`)
-            .then(({ body }) => {
-              expect(body).toEqual({
-                handle: 'boohbah',
-                text: 'oink tweet moo',
-                _id: expect.any(String)
-              });
-            });
-        });
-    });
-  
-    it('updates a tweet with :id and returns the update', () => {
-      let newTweet = {
-        handle: 'hollllaaaa',
-        text: 'can you believe this *&#(*@???'
-      };
-      return createTweet('pizzatown')
-        .then(createdTweet => {
-          const _id = createdTweet._id;
-          return request(app)
-            .put(`/tweets/${_id}`)
-            .send(newTweet);
-        })
-        .then(res => {
-          expect(res.body.handle).toEqual('hollllaaaa');
-        });
-    });
-  
-    it('can delete a tweet', () => {
-      return createTweet('rimrafin')
-        .then(res => {
-          return request(app)
-            .delete(`/tweets/${res._id}`);
-        })
-        .then(({ body }) => {
-          expect(body).toEqual({ deleted: 1 });
-        });
-    });
-  
+  beforeAll(done => {
+    mkdirp('./data/tweets', done);
+    mkdirp('./data/tags', done);
+    done();
+  });
+  afterEach(done => {
+    rimraf('./data/tweets/*', done);
+    rimraf('./data/tags/*', done);
+    done();
+  });
+  afterAll(done => {
+    createTweet('bo');
+    createHashtag('#TLC');
+    done();
   });
   
-  describe.only('tags', () => {
-    beforeEach(done => {
-      rimraf('./data/tags', err => {
-        done(err);
+  it('creates a new tweet', () => {
+    return request(app)
+      .post('/tweets')
+      .send({ handle: 'paige', text: 'TWEET' })
+      .then(res => {
+        expect(res.body).toEqual({
+          handle: 'paige',
+          text: 'TWEET',
+          _id: expect.any(String)
+        });
       });
-    });
-  
-    beforeEach(done => {
-      mkdirp('./data/tags', err => {
-        done(err);
-      });
-    });
-
-    it('creates a new hashtag', () => {
-      return request(app)
-        .post('/tags')
-        .send({ name: '#yolo' })
-        .then(res => {
-          expect(res.body).toEqual({
-            name: '#yolo',
-            _id: expect.any(String)
-          });
-        });
-    });
-
-    it('can get all the tags!', () => {
-      const tagsToCreate = ['#banana', '#unclebob', '#hashtag', '#bloob3rryJ4m'];
-      return Promise.all(tagsToCreate.map(createHashtag))
-        .then(() => {
-          return request(app)
-            .get('/tags')
-            .then(({ body }) => {
-              expect(body).toHaveLength(4);
-            });
-        });
-    });
-
-    it('can get a tag by id', () => {
-      return createHashtag('#yoloooooo')
-        .then(res => {
-          return request(app)
-            .get(`/tags/${res._id}`)
-            .then(res => {
-              expect(res.body).toEqual({
-                name: '#yoloooooo',
-                _id: expect.any(String)
-              });
-            }); 
-        });
-    });
-
-    it('updates a tag with :id and returns the update', () => {
-      let newTag = { name: '#banana' };
-      return createHashtag('#shizz')
-        .then(createdTag => {
-          const _id = createdTag._id;
-          return request(app)
-            .put(`/tags/${_id}`)
-            .send(newTag);
-        })
-        .then(res => {
-          expect(res.body.name).toEqual('#banana');
-        });
-    });
   });
 
-  it('can delete a tag', () => {
-    return createHashtag('#rimrafin')
+  it('gets all the tweets', () => {
+    const tweetsToCreate = ['yoyo', 'jelly123', 'jessie456'];
+    return Promise.all(tweetsToCreate.map(createTweet))
+      .then(() => {
+        return request(app)
+          .get('/tweets')
+          .then(({ body }) => {
+            expect(body).toHaveLength(3);
+          });
+      });
+  });
+
+  it('gets a tweet by id', () => {
+    return createTweet('boohbah')
       .then(res => {
         return request(app)
-          .delete(`/tags/${res._id}`);
+          .get(`/tweets/${res._id}`)
+          .then(({ body }) => {
+            expect(body).toEqual({
+              handle: 'boohbah',
+              text: 'oink tweet moo',
+              _id: expect.any(String)
+            });
+          });
+      });
+  });
+
+  it('updates a tweet with :id and returns the update', () => {
+    let newTweet = {
+      handle: 'hollllaaaa',
+      text: 'can you believe this *&#(*@???'
+    };
+    return createTweet('pizzatown')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .put(`/tweets/${_id}`)
+          .send(newTweet);
+      })
+      .then(res => {
+        expect(res.body.handle).toEqual('hollllaaaa');
+      });
+  });
+
+  it('can delete a tweet', () => {
+    return createTweet('rimrafin')
+      .then(res => {
+        return request(app)
+          .delete(`/tweets/${res._id}`);
       })
       .then(({ body }) => {
         expect(body).toEqual({ deleted: 1 });
       });
   });
-  
+
+});
+
+beforeEach(done => {
+  rimraf('./data/tags', err => {
+    done(err);
+  });
+});
+
+beforeEach(done => {
+  mkdirp('./data/tags', err => {
+    done(err);
+  });
+});
+
+it('creates a new hashtag', () => {
+  return request(app)
+    .post('/tags')
+    .send({ name: '#yolo' })
+    .then(res => {
+      expect(res.body).toEqual({
+        name: '#yolo',
+        _id: expect.any(String)
+      });
+    });
+});
+
+it('can get all the tags!', () => {
+  const tagsToCreate = ['#banana', '#unclebob', '#hashtag', '#bloob3rryJ4m'];
+  return Promise.all(tagsToCreate.map(createHashtag))
+    .then(() => {
+      return request(app)
+        .get('/tags')
+        .then(({ body }) => {
+          expect(body).toHaveLength(4);
+        });
+    });
+});
+
+it('can get a tag by id', () => {
+  return createHashtag('#yoloooooo')
+    .then(res => {
+      return request(app)
+        .get(`/tags/${res._id}`)
+        .then(res => {
+          expect(res.body).toEqual({
+            name: '#yoloooooo',
+            _id: expect.any(String)
+          });
+        }); 
+    });
+});
+
+it('updates a tag with :id and returns the update', () => {
+  let newTag = { name: '#banana' };
+  return createHashtag('#shizz')
+    .then(createdTag => {
+      const _id = createdTag._id;
+      return request(app)
+        .put(`/tags/${_id}`)
+        .send(newTag);
+    })
+    .then(res => {
+      expect(res.body.name).toEqual('#banana');
+    });
+});
+
+it('can delete a tag', () => {
+  return createHashtag('#rimrafin')
+    .then(res => {
+      return request(app)
+        .delete(`/tags/${res._id}`);
+    })
+    .then(({ body }) => {
+      expect(body).toEqual({ deleted: 1 });
+    });
 });
 
