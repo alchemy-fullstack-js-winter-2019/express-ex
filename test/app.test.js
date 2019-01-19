@@ -45,7 +45,7 @@ describe('tweets', () => {
       });
   });
 
-  it('gets a list of tweets', () => {
+  it.skip('gets a list of tweets', () => {
     const tweetsToCreate = ['carmen1', 'carmen2', 'carmen3'];
 
     return Promise.all(tweetsToCreate.map(createTweet))
