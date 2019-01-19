@@ -50,4 +50,46 @@ describe('tweets', () => {
         expect(body).toHaveLength(4);
       });
   });
+  it('gets a tweet by id', () => {
+    return createTweet('mac')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .get(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              handle: 'mac',
+              text: 'my first tweet',
+              _id: _id
+            });
+          });
+      });
+  });
+});
+it('updates a tweet by id', () => {
+  return createTweet('mac')
+    .then(createdTweet => {
+      const _id = createdTweet._id;
+      return request(app)
+        .put(`/tweets/${_id}`)
+        .send({ handle: 'mac', text: 'updated' })
+        .then(res => {
+          expect(res.body).toEqual({
+            handle: 'mac',
+            text: 'updated',
+            _id: _id
+          });
+        });
+    });
+});
+it('deletes a tweet by id', () => {
+  return createTweet('mac')
+    .then(createdTweet => {
+      const _id = createdTweet._id;
+      return request(app)
+        .delete(`/tweets/${_id}`)
+        .then(res => {
+          expect(res.body).toEqual({ deleted: 1 });
+        });
+    });
 });
