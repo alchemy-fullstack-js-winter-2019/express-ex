@@ -100,15 +100,26 @@ describe('app tests', () => {
   });
 });
 
-it('creates a new tag', () => {
-  return request(app)
-    .post('/tag')
-    .send({ name: '#1' })
-    .then(res => {
-      expect(res.body).toEqual({
-        name: '#1',
-        _id: expect.any(String)
-      });
+describe('app tests', () => {
+  beforeEach(done => {
+    rimraf('./data/tags', err => {
+      done(err);
     });
+  });
+  beforeEach(done => {
+    mkdirp('./data/tags', err => {
+      done(err);
+    });
+  });
+  it('creates a new tag', () => {
+    return request(app)
+      .post('/tags')
+      .send({ name: '#1' })
+      .then(res => {
+        expect(res.body).toEqual({
+          name: '#1',
+          _id: expect.any(String)
+        });
+      });
+  });
 });
-

@@ -21,9 +21,9 @@ describe('Store', () => {
   });
 
   it('creates an object in my store', done => {
-    store.create({ name: 'ryan' }, (err, createdPerson) => {
+    store.create({ name: 'dee' }, (err, createdPerson) => {
       expect(err).toBeFalsy();
-      expect(createdPerson).toEqual({ name: 'ryan', _id: expect.any(String) });
+      expect(createdPerson).toEqual({ name: 'dee', _id: expect.any(String) });
       done();
     });
   });
@@ -100,10 +100,10 @@ describe('Store', () => {
     // store.create
     store.create({ name: 'rayn' }, (err, typoCreated) => {
       // -> store.findByIdAndUpdate(createdObject._id, updatedObject, callback)
-      store.findByIdAndUpdate(typoCreated._id, { name: 'ryan' }, (err, updatedWithoutTypo) => {
+      store.findByIdAndUpdate(typoCreated._id, { name: 'dee' }, (err, updatedWithoutTypo) => {
         // -> -> expect updatedObject returned in callback
         expect(err).toBeFalsy();
-        expect(updatedWithoutTypo).toEqual({ name: 'ryan', _id: typoCreated._id });
+        expect(updatedWithoutTypo).toEqual({ name: 'dee', _id: typoCreated._id });
         // -> -> store.findById(createdObject._id)
         store.findById(typoCreated._id, (err, foundObj) => {
           // -> -> -> expect updated object
