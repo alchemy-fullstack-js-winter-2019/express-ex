@@ -60,7 +60,7 @@ describe('app tests', () => {
           expect(body).toHaveLength(3);
         });
     });
-    it('gets a tweet and update', () => {
+    it('gets a tweet by id and update', () => {
       return createTweet('tweet tweet')
         .then(createdTweet => {
           const id = createdTweet._id;
@@ -81,6 +81,19 @@ describe('app tests', () => {
                     _id: id
                   });
                 });
+            });
+        });
+    });
+    it('delete tweet by id', () => {
+      return createTweet('tweeet')
+        .then(createdTweet => {
+          const id = createdTweet._id;
+          return request(app)
+            .delete(`/tweets/${id}`)
+            .then(res =>  {
+              expect(res.body).toEqual({
+                deleted: 1
+              });
             });
         });
     });
