@@ -99,3 +99,16 @@ describe('app tests', () => {
     });
   });
 });
+
+it('creates a new tag', () => {
+  return request(app)
+    .post('/tag')
+    .send({ name: '#1' })
+    .then(res => {
+      expect(res.body).toEqual({
+        name: '#1',
+        _id: expect.any(String)
+      });
+    });
+});
+
