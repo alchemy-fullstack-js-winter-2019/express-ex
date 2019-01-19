@@ -24,7 +24,6 @@ const createTag = name => {
 // APP ------------------------------------------
 describe('tweets', () => {
   beforeAll(done => {
-    createTweet('buggaboo');
     mkdirp('./data/tweets', done);
     mkdirp('./data/tags', done);
     done();
