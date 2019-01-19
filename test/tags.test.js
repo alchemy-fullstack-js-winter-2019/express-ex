@@ -34,4 +34,16 @@ describe('tags', () => {
         deleted: 1
       }));
   });
+
+  it('updates a tag', () => {
+    request(app)
+      .put(`/tags/${tag._id}`)
+      .send({
+        name: '#thestruggleisnotreal',
+      })
+      .then(res => expect(res.body).toEqual({
+        name: '#thestruggleisnotreal',
+        _id:'1'
+      }));
+  });
 });
