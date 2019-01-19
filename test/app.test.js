@@ -171,5 +171,17 @@ describe('routes', () => {
         });
     });
   });
+
+  it('can delete a tag', () => {
+    return createHashtag('#rimrafin')
+      .then(res => {
+        return request(app)
+          .delete(`/tags/${res._id}`);
+      })
+      .then(({ body }) => {
+        expect(body).toEqual({ deleted: 1 });
+      });
+  });
+  
 });
 
