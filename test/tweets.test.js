@@ -71,7 +71,7 @@ describe('test tweets', () => {
                     .del(`/tweets/${createdTweet._id}`);
             })
             .then(res => {
-                expect(res.body).toEqual({ "deleted": 1 });
+                expect(res.body).toEqual({ 'deleted': 1 });
             });
     });
 
