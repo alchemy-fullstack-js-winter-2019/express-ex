@@ -12,25 +12,36 @@ const createTweet = (handle, text = 'hi I a tweet') => {
     })
     .then(res => res.body);
 };
+const createTag = name => {
+  return request(app)
+    .post('/tags')
+    .send({
+      name
+    })
+    .then(res => res.body);
+};
 
 // APP ------------------------------------------
 describe('tweets', () => {
   beforeAll(done => {
     createTweet('buggaboo');
     mkdirp('./data/tweets', done);
+    mkdirp('./data/tags', done);
     done();
   });
   afterEach(done => {
     rimraf('./data/tweets/*', done);
+    rimraf('./data/tags/*', done);
     done();
   });
   afterAll(done => {
     createTweet('bo');
+    createTag('#TLC');
     done();
   });
 
   // CREATE ------------------------------------------
-  it('gets a tweet', () => {
+  it('can post a new tweet', () => {
     return request(app)
       .post('/tweets')
       .send({ handle: 'pizza', text: 'I am a tweet' })
@@ -38,6 +49,17 @@ describe('tweets', () => {
         expect(res.body).toEqual({
           handle: 'pizza',
           text: 'I am a tweet',
+          _id: expect.any(String)
+        });
+      });
+  });
+  it('can post a new tag', () => {
+    return request(app)
+      .post('/tags')
+      .send({ name: '#jellybean' })
+      .then(res => {
+        expect(res.body).toEqual({
+          name: '#jellybean',
           _id: expect.any(String)
         });
       });
