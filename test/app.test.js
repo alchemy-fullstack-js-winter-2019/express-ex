@@ -65,12 +65,23 @@ describe('tweets', () => {
       });
   });
   // GET LIST ------------------------------------------
-  it('gets a list of tweets from db', () => {
+  it('can get a list of tweets from db', () => {
     const tweetsToCreate = ['hey', 'hi', 'hello', 'hola'];
     return Promise.all(tweetsToCreate.map(createTweet))
       .then(() => {
         return request(app)
           .get('/tweets');
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(4);
+      });
+  });
+  it('can get a list of tags from db', () => {
+    const tagsToCreate = ['#respect', '#yogurt420', '#mypeeps', '#hastalavistababy'];
+    return Promise.all(tagsToCreate.map(createTag))
+      .then(() => {
+        return request(app)
+          .get('/tags');
       })
       .then(({ body }) => {
         expect(body).toHaveLength(4);
