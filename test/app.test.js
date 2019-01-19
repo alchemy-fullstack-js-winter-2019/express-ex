@@ -118,6 +118,7 @@ describe('routes', () => {
         done(err);
       });
     });
+
     it('creates a new hashtag', () => {
       return request(app)
         .post('/tags')
@@ -129,6 +130,7 @@ describe('routes', () => {
           });
         });
     });
+
     it('can get all the tags!', () => {
       const tagsToCreate = ['#banana', '#unclebob', '#hashtag', '#bloob3rryJ4m'];
       return Promise.all(tagsToCreate.map(createHashtag))
@@ -155,6 +157,19 @@ describe('routes', () => {
         });
     });
 
+    it('updates a tag with :id and returns the update', () => {
+      let newTag = { name: '#banana' };
+      return createHashtag('#shizz')
+        .then(createdTag => {
+          const _id = createdTag._id;
+          return request(app)
+            .put(`/tags/${_id}`)
+            .send(newTag);
+        })
+        .then(res => {
+          expect(res.body.name).toEqual('#banana');
+        });
+    });
   });
 });
 
