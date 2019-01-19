@@ -1,7 +1,8 @@
 const request = require('supertest');
 const app = require('../lib/app');
 
-
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf'); 
 
 const createTweet = (handle) => {
   return request(app)
@@ -13,6 +14,18 @@ const createTweet = (handle) => {
 };
 
 describe('tweets', () => {
+
+  beforeEach(done => {
+    rimraf('./data/tweets', err => {
+      done(err);
+    });
+  });
+  beforeEach((done) => {
+    mkdirp('./data/tweets', err => {
+      done(err);
+    });
+  }); 
+
   it('gets a tweet', () => {
     return request(app)
       .get('/tweets/abcd')
@@ -42,13 +55,30 @@ it('gets a list of tweets', () => {
   return Promise.all(tweetsToCreate.map(createTweet))
     .then(() => {
       return request(app)
-        .get('/tweets')
-        .then(({ body }) => {
-          expect(body).toHaveLength(3);
+        .get('/tweets');
+    })
+    .then(({ body }) => {
+      expect(body).toHaveLength(3);
+    });
+});
+
+it('gets a tweet by id and updates', () => {
+
+});
+
+
+it('gets a tweet by id and deletes', () => {
+  return createTweet('this will be deleted')
+    .then(newTweet => {
+      const id = newTweet._id;
+      return request(app)
+        .delete(`/tweets/${id}`)
+        .then(res => {
+          expect(res.status).toEqual(200);
         });
     });
 });
-    
+
 it('can send a tweet', () => {
   return request(app)
     .post('/tweets')
@@ -57,4 +87,3 @@ it('can send a tweet', () => {
       expect(res.body).toEqual({ handle: 'abel', text: 'is this how i tweet', _id: expect.any(String) });
     });
 });
-
