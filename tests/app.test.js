@@ -4,12 +4,12 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
 
-const testData =  handle => {
+const testData = handle => {
   return request(app)
     .post('/tweets')
     .send({
       handle,
-      text:'you have no idea'
+      text: 'you have no idea'
     })
     .then(res => res.body);
 };
@@ -26,16 +26,16 @@ describe('express server', () => {
       done(err);
     });
   });
-  
-  it('creates a new tweet', () => {  
+
+  it('creates a new tweet', () => {
     return request(app)
       .post('/tweets')
-      .send({ handle: 'mike', text:'my 1st tweet' })
+      .send({ handle: 'mike', text: 'my 1st tweet' })
       .then(res => {
         // console.log('banana', res);
         expect(res.body).toEqual({
-          handle:'mike',
-          text:'my 1st tweet',
+          handle: 'mike',
+          text: 'my 1st tweet',
           _id: expect.any(String)
         });
       });
@@ -46,11 +46,18 @@ describe('express server', () => {
       .then(() => {
         return request(app)
           .get('/tweets');
-      })  
+      })
       .then(({ body }) => {
         expect(body).toHaveLength(3);
       });
   });
-
-
-});
+  it('gets a tweet by ID', () => {
+    return testData('tweet4')
+      .then(({ _id }) => {
+        return Promise.all([
+          Promise.resolve(_id),
+          request(app).get(`/tweets/${_id}`)
+        ]);
+      });
+  });
+  
