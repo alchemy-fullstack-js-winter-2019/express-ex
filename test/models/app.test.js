@@ -73,12 +73,25 @@ describe('tweets', () => {
       });
   });
 
-  it('finds a tweet by id and updates', () => {
-    return makeTweet('tweet made')
-      .then(() => {
+  it('gets a tweet by id and updates', () => {
+    return makeTweet('tweet with a typo')
+      .then(tweetMade => {
+        const id = tweetMade._id;
         return request(app)
-          .put('/tweets/:id');
+          .put(`/tweets/${id}`)
+          .send({
+            handle: 'katerj',
+            text: 'update this tweet',
+            _id: id
+          })
+          .then(() => {
+            return request(app)
+              .get(`/tweets/${id}`)
+              .then(res => {
+                expect(res.body.text).toEqual('update this tweet');
+              });
+          });
       });
   });
-
+      
 });
