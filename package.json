@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:watch": "jest --watch",
+    "test": "jest",
     "start": "nodemon server.js",
     "start:client": "node client.js"
   },
@@ -23,7 +24,9 @@
     "eslint": "^5.12.1",
     "express": "^4.16.4",
     "jest": "^23.6.0",
+    "mkdirp": "^0.5.1",
     "nodemon": "^1.18.9",
+    "rimraf": "^2.6.3",
     "superagent": "^4.1.0",
     "supertest": "^3.4.1"
   },
