@@ -50,4 +50,17 @@ describe('tweets', () => {
         deleted: 1
       }));
   });
+
+  it('updates a tweet', () => {
+    return request(app)
+      .put(`/tweets/${tweet._id}`)
+      .send({
+        text: 'I meant tweet'
+      })
+      .then(res => expect(res.body).toEqual({
+        handle: 'shabz',
+        text: 'I meant tweet',
+        _id:'1'
+      }));
+  });
 });
