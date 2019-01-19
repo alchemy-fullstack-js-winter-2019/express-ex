@@ -46,4 +46,15 @@ describe('tags', () => {
         _id:'1'
       }));
   });
+
+  it('gets all tags', () => {
+    return request(app)
+      .get('/tags')
+      .then(res => expect(res.body).toEqual({
+        1 : {
+          name: '#thestruggleisreal',
+          _id:'1'
+        }
+      }));
+  });
 });
