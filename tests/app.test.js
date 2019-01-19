@@ -58,6 +58,7 @@ describe('tweets', () => {
         expect(res.body.handle).toEqual('T_on_A');
       });
   });
+
   it('updates a tweet', () => {
     return createTweet('TT')
       .then(createdTweet => {
@@ -95,6 +96,15 @@ describe('tweets', () => {
   });
 });
 
+const createHash = hashtag => {
+  return request(app)
+    .post('/tags')
+    .send({
+      hashtag: hashtag
+    })
+    .then(res => res.body);
+};
+
 describe('hashtags', () => {
   beforeEach(done => {
     rimraf('./data/tags', done);
@@ -104,7 +114,75 @@ describe('hashtags', () => {
     mkdirp('./data/tags', done);
   });
   
-  it('posts a tag', () => {
-    
+  it('posts a hashtag', () => {
+    return request(app)
+      .post('/tags')
+      .send({ hashtag: '#tired' })
+      .then(res => {
+        expect(res.body).toEqual({
+          hashtag: '#tired',
+          _id: expect.any(String)
+        });
+      });
   });
+
+  it('gets a list of tags', () => {
+    const handles = ['#GOHOME', '#WTF', '#LAZY'];
+    return Promise.all(handles.map(createHash))
+      .then(() => {
+        return request(app)
+          .get('/tags')
+          .then(res => {
+            expect(res.body).toHaveLength(3);
+          });
+      });
+  });
+  it('gets a hashtag by id', () => {
+    return createHash('#FTW')
+      .then(createdHash => {
+        const id = createdHash._id;
+        return request(app)
+          .get(`/tags/${id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          hashtag: '#FTW',
+          _id: expect.any(String)
+        });
+      });
+  });
+  it('updates a hashtag by id', () => {
+    return createHash('#YOLO')
+      .then(createdHash => {
+        const id = createdHash._id;
+        return request(app)
+          .put(`/tags/${id}`)
+          .send({
+            hashtag: '#YESSIR',
+            _id: id
+          })
+          .then(() => {
+            return request(app)
+              .get(`/tags/${id}`)
+              .then(res => {
+                expect(res.body).toEqual({
+                  hashtag: '#YESSIR',
+                  _id: id
+                });
+              });
+          });
+      });
+  });
+  it('deletes by id', () => {
+    return createHash('#BYEFELICIA')
+      .then(createdHash => {
+        const id = createdHash._id;
+        return request(app)
+          .delete(`/tags/${id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
+      });
+  });
+  
 });
