@@ -68,16 +68,16 @@ describe('tags', () => {
         expect(res.body.name).toContain('#turntup');
       });
   });
-  // it('deletes a tweet with :id and returns the delete count', () => {
-  //   return createTweet('baller for lyfe')
-  //     .then((createdTweet) => {
-  //       const id = createdTweet._id;
-  //       return request(app)
-  //         .delete(`/tweets/${id}`)
-  //         .then(res => {
-  //           expect(res.body).toEqual({ 'deleted': 1 });
-  //         });
-  //     });
-  // });
+  it('deletes a tag with :id and returns the delete count', () => {
+    return createTag('#ballerforlyfe')
+      .then((createdTag) => {
+        const id = createdTag._id;
+        return request(app)
+          .delete(`/tags/${id}`)
+          .then(res => {
+            expect(res.body).toEqual({ 'deleted': 1 });
+          });
+      });
+  });
 });
 
