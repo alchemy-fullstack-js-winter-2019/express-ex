@@ -27,16 +27,11 @@ describe('tags', () => {
       });
   });
 
-  it('posts a tag', () => {
-    request(app)
-      .post('/tags')
-      .send({
-        name: '#thestruggleisstillreal',
-        _id:'2'
-      })
+  it('deletes a tag', () => {
+    return request(app)
+      .delete(`/tags/${tag._id}`)
       .then(res => expect(res.body).toEqual({
-        name: '#thestruggleisstillreal',
-        _id:'2'
+        deleted: 1
       }));
   });
 });
