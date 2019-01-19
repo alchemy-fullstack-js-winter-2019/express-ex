@@ -16,7 +16,7 @@ const createTweet = (handle, text = 'hi I a tweet') => {
 // APP ------------------------------------------
 describe('tweets', () => {
   beforeAll(done => {
-    createTweet('hi I a tweet');
+    createTweet('buggaboo');
     mkdirp('./data/tweets', done);
     done();
   });
@@ -25,7 +25,7 @@ describe('tweets', () => {
     done();
   });
   afterAll(done => {
-    createTweet('hi I a tweet');
+    createTweet('bo');
     done();
   });
 
@@ -86,6 +86,19 @@ describe('tweets', () => {
       })
       .then(res => {
         expect(res.body.handle).toEqual('hollllaaaa');
+      });
+  });
+
+  // DELETE ------------------------------------------
+  it('can delete a tweet with :id and return the delete count', () => {
+    return createTweet('alo')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .delete(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
       });
   });
 });
