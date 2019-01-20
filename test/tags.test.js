@@ -84,4 +84,12 @@ describe('tags', () => {
         expect(res.body).toEqual({ 'deleted': 1 });
       });
   });
+
+  it('returns 404 not found if given the wrong route', () => {
+    return request(app)
+      .get('/foo/bar')
+      .expect(404);
+  });
+
+  
 });
