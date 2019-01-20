@@ -13,7 +13,7 @@ const createTweet = (handle, text) => {
     .then(res => res.body);
 };
 
-describe('app tests', () => {
+describe('tweets tests', () => {
   beforeEach(done => {
     rimraf('./data/tweets', err => {
       done(err);
@@ -38,7 +38,7 @@ describe('app tests', () => {
           });
         });
     });
-    it('gets a list of tweet by id', () => {
+    it('gets a tweet by id', () => {
       return createTweet('tweet1', 'I am a tweet')
         .then(createdTweet => {
           const id = createdTweet._id;
@@ -100,7 +100,18 @@ describe('app tests', () => {
   });
 });
 
-describe('app tests', () => {
+
+const createTag = (name, id) => {
+  return request(app)
+    .post('/tags')
+    .send({
+      name,
+      id
+    })
+    .then(res => res.body);
+};
+
+describe('tags tests', () => {
   beforeEach(done => {
     rimraf('./data/tags', err => {
       done(err);
@@ -111,15 +122,29 @@ describe('app tests', () => {
       done(err);
     });
   });
-  it('creates a new tag', () => {
-    return request(app)
-      .post('/tags')
-      .send({ name: '#1' })
-      .then(res => {
-        expect(res.body).toEqual({
-          name: '#1',
-          _id: expect.any(String)
+  describe('tags', () => {
+    it('creates a new tag', () => {
+      return request(app)
+        .post('/tags')
+        .send({ name: '#1' })
+        .then(res => {
+          expect(res.body).toEqual({
+            name: '#1',
+            _id: expect.any(String)
+          });
         });
-      });
+    });
+    it('gets a tag by id', () => {
+      return createTag('#LOL')
+        .then(createdTag => {
+          const id = createdTag._id;
+          return request(app)
+            .get(`/tags/${id}`);
+        })
+        .then(res => {
+          expect(res.body).toEqual({ name: '#LOL', _id: expect.any(String) });
+        });
+    });
   });
 });
+
