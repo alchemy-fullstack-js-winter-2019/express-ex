@@ -7,7 +7,7 @@ const makeTag = (text) => {
   return request(app)
     .post('/tags')
     .send({
-      text: `#${text}`
+      tag: `#${text}`
     })
     .then(res => res.body);
 };
@@ -48,6 +48,22 @@ describe('tweets', () => {
       })
       .then(({ body }) => {
         expect(body).toHaveLength(3);
+      });
+  });
+
+  it('gets a tag by id', () => {
+    return makeTag('hashtag')
+      .then(newTag => {
+        console.log(newTag);
+        const id = newTag._id;
+        return request(app)
+          .get(`/tags/${id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          tag: '#hashtag',
+          _id: expect.any(String)
+        });
       });
   });
 
