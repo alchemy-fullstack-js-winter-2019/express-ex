@@ -36,7 +36,7 @@ describe('tweets', () => {
         });
       });
   });
-  it.only('gets tweet by id', () => {
+  it('gets tweet by id', () => {
     return createTweet('huh')
       .then(newTweet => {
         const id = newTweet._id;
@@ -51,7 +51,18 @@ describe('tweets', () => {
         });
       });
   });
-
+  it.only('gets all tweets', () => {
+    return Promise.all(['tweet1', 'tweet2', 'tweet3'].map(tweets => {
+      createTweet(tweets);
+    }))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
+      });
+  });
 });
 
 
