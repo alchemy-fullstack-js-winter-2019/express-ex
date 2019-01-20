@@ -145,6 +145,17 @@ describe('tags tests', () => {
           expect(res.body).toEqual({ name: '#LOL', _id: expect.any(String) });
         });
     });
+    it('gets a list of tags', () => {
+      const tagsToCreate = ['#TGIF', '#FOMO', '#10YRCHALLENGE'];
+      return Promise.all(tagsToCreate.map(createTag))
+        .then(() => {
+          return request(app)
+            .get('/tags/');
+        })
+        .then(({ body }) => {
+          expect(body).toHaveLength(3);
+        }
+        );
+    });
   });
 });
-
