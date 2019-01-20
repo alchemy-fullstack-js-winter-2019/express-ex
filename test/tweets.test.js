@@ -77,4 +77,10 @@ describe('tweets', () => {
           .then(resp => expect(resp.body).toEqual(added));
       });
   });
+
+  it('error on non-existing id', () => {
+    return request(app)
+      .get('/tweets/5')
+      .then(resp => expect(resp.text).toEqual('id does not exist!'));
+  });
 });
