@@ -28,5 +28,8 @@
     "nodemon": "^1.18.9",
     "rimraf": "^2.6.3",
     "supertest": "^3.4.1"
+  },
+  "dependencies": {
+    "shortid": "^2.2.14"
   }
 }
