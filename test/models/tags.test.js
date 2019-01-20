@@ -5,7 +5,7 @@ const rimraf = require('rimraf');
 
 const makeTag = (text) => {
   return request(app)
-    .post('/tweets')
+    .post('/tags')
     .send({
       text: `#${text}`
     })
@@ -15,13 +15,13 @@ const makeTag = (text) => {
 describe('tweets', () => {
 
   beforeEach(done => {
-    rimraf('./data/tweets', err => {
+    rimraf('./data/tags', err => {
       done(err);
     });
   });
 
   beforeEach(done => {
-    mkdirp('./data/tweets', err => {
+    mkdirp('./data/tags', err => {
       done(err);
     });
   });
@@ -35,6 +35,19 @@ describe('tweets', () => {
           tag: '#threedayweekend',
           _id: expect.any(String) 
         });
+      });
+  });
+
+  it('returns a list of tags', () => {
+    return Promise.all(['hashtag1', 'hashtag2', 'hashtag3'].map(tag => { 
+      makeTag(tag);
+    }))
+      .then(() => {
+        return request(app)
+          .get(`/tags`);
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
       });
   });
 
