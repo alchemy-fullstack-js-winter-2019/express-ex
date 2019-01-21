@@ -90,4 +90,16 @@ describe('tweets', () => {
       });
   });
 
+  it('gets a tag by id and deletes', () => {
+    return makeTag('tagtodelete')
+      .then(tag => {
+        const id = tag._id;
+        return request(app)
+          .delete(`/tags/${id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+      });
+  });
+
 });
