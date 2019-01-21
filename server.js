@@ -4,7 +4,7 @@ app.get('/', (req, res)=> {
   res.end('hi');
 });
 app.get('/another', (req, res)=> {
-  res.end('antoher');
+  res.send('antoher');
 });
 
 app.listen(7890, () => {

@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
 //question: do CRUD methods aka put, get, delete, only take url links?
+//when should we return create___ vs request(app)?
 
 const createTweet = text => {
   return request(app)
@@ -38,7 +39,7 @@ describe('tweets', () => {
         });
       });
   });
-  it.only('deletes tweet by id', () => {
+  it('deletes tweet by id', () => {
     return createTweet('this needs to go down now')
       .then(deleteTweet => {
         const id = deleteTweet._id;
