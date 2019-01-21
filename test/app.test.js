@@ -157,5 +157,40 @@ describe('tags tests', () => {
         }
         );
     });
+    it('gets a tag by id and update', () => {
+      return createTag('#BFF')
+        .then(createdTag => {
+          const id = createdTag._id;
+          return request(app)
+            .put(`/tags/${id}`)
+            .send({
+              name: '#BFFs',
+              _id: id 
+            })
+            .then(() => {
+              return request(app)
+                .get(`/tags/${id}`)
+                .then(res => {
+                  expect(res.body).toEqual({
+                    name: '#BFFs',
+                    _id: id
+                  });
+                });
+            });
+        });
+    });
+    it('gets a tag by id and delete', () => {
+      return createTag('#sundayfunday')
+        .then(createdTag => {
+          const id = createdTag._id;
+          return request(app)
+            .delete(`/tags/${id}`)
+            .then(res => {
+              expect(res.body).toEqual({
+                deleted: 1
+              });
+            });
+        });
+    });
   });
 });
