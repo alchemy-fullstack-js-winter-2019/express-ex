@@ -3,6 +3,8 @@ const app = require('../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
+//question: do CRUD methods aka put, get, delete, only take url links?
+
 const createTweet = text => {
   return request(app)
     .post('/tweets')
@@ -36,6 +38,26 @@ describe('tweets', () => {
         });
       });
   });
+  it.only('gets tweet by id and updates', () => {
+    return createTweet('jon slick')
+      .then(updateTweet => {
+        const id = updateTweet._id;
+        return request(app)
+          .put(`/tweets/${id}`)
+          .send({
+            handle: 'johnny',
+            text: 'john wick',
+            _id: id
+          })
+          .then(() => {
+            return request(app)
+              .get(`/tweets/${id}`)
+              .then(res => {
+                expect(res.body.text).toEqual('john wick');
+              });
+          });
+      });
+  });
   it('gets tweet by id', () => {
     return createTweet('huh')
       .then(newTweet => {
@@ -51,7 +73,7 @@ describe('tweets', () => {
         });
       });
   });
-  it.only('gets all tweets', () => {
+  it('gets all tweets', () => {
     return Promise.all(['tweet1', 'tweet2', 'tweet3'].map(tweets => {
       createTweet(tweets);
     }))
