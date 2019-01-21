@@ -38,7 +38,19 @@ describe('tweets', () => {
         });
       });
   });
-  it.only('gets tweet by id and updates', () => {
+  it.only('deletes tweet by id', () => {
+    return createTweet('this needs to go down now')
+      .then(deleteTweet => {
+        const id = deleteTweet._id;
+        return request(app)
+          .delete(`/tweets/${id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+
+      });
+  });
+  it('gets tweet by id and updates', () => {
     return createTweet('jon slick')
       .then(updateTweet => {
         const id = updateTweet._id;
