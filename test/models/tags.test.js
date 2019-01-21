@@ -67,4 +67,27 @@ describe('tweets', () => {
       });
   });
 
+  it('gets a tag and updates by id', () => {
+    return makeTag('hashtag')
+      .then(oldTag => {
+        const id = oldTag._id;
+        return request(app)
+          .put(`/tags/${id}`)
+          .send({
+            tag: '#updatehashtag',
+            _id: id
+          })
+          .then(() => {
+            return request(app)
+              .get(`/tags/${id}`)
+              .then(res => {
+                expect(res.body).toEqual({
+                  tag: '#updatehashtag',
+                  _id: expect.any(String)
+                });
+              });
+          });
+      });
+  });
+
 });
