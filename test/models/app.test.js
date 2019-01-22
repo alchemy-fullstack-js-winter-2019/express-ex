@@ -60,6 +60,15 @@ describe('tweets', () => {
       });
   });
 
+  it('errors when there is no tweet with an id', () => {
+    return request(app)
+      .get('/tweets/badid')
+      .then(res => {
+        expect(res.status).toEqual(400);
+        expect(res.body).toEqual({ error: expect.any(String) });
+      });
+  });
+
   it('get a list of tweets', () => {
     return Promise.all(['tweet 1', 'tweet 2', 'tweet 3'].map(tweet => {
       makeTweet(tweet);
