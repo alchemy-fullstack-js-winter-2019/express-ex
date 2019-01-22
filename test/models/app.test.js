@@ -91,6 +91,7 @@ it('errors when there is no tweet', () => {
   return request(app) 
     .get('/tweets/badId')
     .then(res => {
-      expect(res.status).toEqual(500);
+      expect(res.status).toEqual(400);
+      expect(res.body).toEqual({ error: 'Bad Id: badId' });
     });
 });
