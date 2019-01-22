@@ -23,7 +23,6 @@ describe('tweets test', () => {
   beforeEach(done => {
     mkdirp('./data/tweets', err => { //makes the directory with data and people
       done(err); 
-      //mkdirp('./data/people, done)done is function that takes error
     });
   });
   it('creates a new tweet', () => {
@@ -34,7 +33,6 @@ describe('tweets test', () => {
         text: 'I am a tweet' 
       })
       .then(res => {
-        // console.log('response', res);
         expect(res.body).toEqual({
           handle: 'ryan',
           text: 'I am a tweet',
