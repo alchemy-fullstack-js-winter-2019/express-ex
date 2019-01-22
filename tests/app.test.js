@@ -60,5 +60,16 @@ describe('express server', () => {
         ]);
       });
   });
-  
+  it('gets a tweet by ID & updates', () => {
+    return testData('tweet5')
+      .then(testData => {
+        return request(app)
+          .put(`/tweets/${testData._id}`)
+          .send({ text: 'this is not my beautiful house' });
+      })
+      .then(res => {
+        expect(res.body.text).toEqual('this is not my beautiful house');
+       
+      });
+  });
 });
