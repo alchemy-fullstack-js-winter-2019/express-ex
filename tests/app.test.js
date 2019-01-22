@@ -9,7 +9,7 @@ const testData = handle => {
     .post('/tweets')
     .send({
       handle,
-      text: 'you have no idea'
+      text: 'you are doing great things'
     })
     .then(res => res.body);
 };
@@ -70,6 +70,16 @@ describe('express server', () => {
       .then(res => {
         expect(res.body.text).toEqual('this is not my beautiful house');
        
+      });
+  });
+  it('deletes a tweet by id', () => {
+    return testData ('tweet 6')
+      .then (testData => {
+        return request(app)
+          .delete(`/tweets/${testData._id}`)
+          .then(res => { 
+            expect(res.body).toEqual({ deleted: 1 });
+          });
       });
   });
 });
