@@ -40,14 +40,13 @@ describe('tweets', () => {
       .send({ handle: 'carmen', text: 'my first tweet' })
       .then(res => {
         expect(res.body).toEqual({
-          handle: 'carmen', text: 'my first tweet', _id: expect.any(String)
+          handle: 'carmen', text: 'my first tweet', _id: expect.any(String) 
         });
       });
   });
 
   it('gets a list of tweets', () => {
     const tweetsToCreate = ['carmen1', 'carmen2', 'carmen3'];
-
     return Promise.all(tweetsToCreate.map(createTweet))
       .then(() => {
         return request(app)
@@ -59,8 +58,19 @@ describe('tweets', () => {
   });
 });
 
-//   it('gets a tweet by id', () => {
-//     return request(app)
-//       .get('/tweets')
-//   });
-// });
+it('gets a tweet by id', () => {
+  return createTweet('carmen1')
+    .then(tweetCreated => {
+      const _id = tweetCreated._id;
+      return request(app)
+        .get(`/tweets/${_id}`)
+        .then(res => {
+          expect(res.body).toEqual({
+            handle: 'carmen1', 
+            text: 'hi there', 
+            _id  
+          });
+        });
+    });
+});
+
