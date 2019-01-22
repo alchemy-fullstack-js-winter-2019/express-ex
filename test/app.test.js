@@ -56,21 +56,38 @@ describe('tweets', () => {
         expect(body).toHaveLength(3);
       });
   });
-});
 
-it('gets a tweet by id', () => {
-  return createTweet('carmen1')
-    .then(tweetCreated => {
-      const _id = tweetCreated._id;
-      return request(app)
-        .get(`/tweets/${_id}`)
-        .then(res => {
-          expect(res.body).toEqual({
-            handle: 'carmen1', 
-            text: 'hi there', 
-            _id  
+  it('gets a tweet by id', () => {
+    return createTweet('carmen1')
+      .then(tweetCreated => {
+        const _id = tweetCreated._id;
+        return request(app)
+          .get(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              handle: 'carmen1', 
+              text: 'hi there', 
+              _id  
+            });
           });
-        });
-    });
-});
+      });
+  });
+  
+  it('gets tweet by id and return an updated tweet', () => {
+    const updatedTweet = {
+      handle: 'carmen1',
+      test: 'God is good all the time!'
+    };
+    return createTweet('helloworld')
+      .then(tweetCreated => {
+        const _id = tweetCreated._id;
+        return request(app)
+          .put(`/tweets/${_id}`)
+          .send(updatedTweet);
+      })
+      .then(res => {
+        expect(res.body.handle).toEqual('carmen1');
+      });
+  });
 
+});
