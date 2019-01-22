@@ -42,23 +42,26 @@ it('gets a tweet by id', () => {
       return request(app)
         .get(`/tweets/${_id}`);
     })
-    .then(res => {
+    .get('/tweets/:id')
+    .then(req, res) => {
       expect(res.body).toEqual({
-        id: _id,
+        id: createdTweet._id,
         text: 'my first tweet'
       });
+
+    }
     });
 });
 
 it('gets a list of tweets', () => {
-  const tweetsToCreate = ['hello', 'hola', 'shalom'];
+  const tweetsToCreate = ['hello', 'hola', 'shalom', 'bonjour'];
   return Promise.all(tweetsToCreate.map(createTweet))
     .then(() => {
       return request(app)
         .get('/tweets');
     })
     .then(({ body }) => {
-      expect(body).toEqual({ handle: 'abel1', text: 'hello', _id: expect.any(String) });
+      expect(body).toEqual({ text: 'my first tweet', _id: expect.any(String) });
     });
 });
 
