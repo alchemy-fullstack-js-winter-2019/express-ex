@@ -184,3 +184,11 @@ it('can delete a tag', () => {
     });
 });
 
+it('errors when there is no tweet by id', () => {
+  return request(app)
+    .get('/tweets/badId')
+    .then(res => {
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toEqual({ error: 'Bad Id' });
+    });
+});
