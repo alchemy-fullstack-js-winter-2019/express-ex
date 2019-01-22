@@ -53,10 +53,17 @@ describe('tweets', () => {
       });
   });
   it('gets a tweet by id', () => {
-    return request(app)
-      .get('/tweets/abcd')
-      .then(res => {
-        expect(res.text).toEqual('abcd');
+    return createTweet('kristin1')
+      .then(createdTweet => {
+        return request(app) 
+          .get(`/tweets/${createdTweet._id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              handle: 'kristin1',
+              tweet: 'test tweet',
+              _id: expect.any(String)
+            });
+          });
       });
   });
   it('updates a tweet with :id and returns the update', () => {
@@ -83,4 +90,3 @@ describe('tweets', () => {
       });
   });
 });
-
