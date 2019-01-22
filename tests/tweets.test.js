@@ -89,4 +89,12 @@ describe('tweets', () => {
           });
       });
   });
+  it('errors when there is no tag with an id', () => {
+    return request(app)
+      .get('/tweets/badId')
+      .then(res => {
+        expect(res.status).toEqual(500);
+        expect(res.body).toEqual({ error: expect.any(String) });
+      });
+  });
 });

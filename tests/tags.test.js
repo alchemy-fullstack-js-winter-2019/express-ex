@@ -50,10 +50,16 @@ describe('tags', () => {
       });
   });
   it('gets a tag by id', () => {
-    return request(app)
-      .get('/tags/abcd')
-      .then(res => {
-        expect(res.text).toEqual('abcd');
+    return createTag('#yolo')
+      .then(createdTag => {
+        return request(app) 
+          .get(`/tags/${createdTag._id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              name: '#yolo',
+              _id: expect.any(String)
+            });
+          });
       });
   });
   it('updates a tag with :id and returns the update', () => {
@@ -77,6 +83,14 @@ describe('tags', () => {
           .then(res => {
             expect(res.body).toEqual({ 'deleted': 1 });
           });
+      });
+  });
+  it('errors when there is no tag with an id', () => {
+    return request(app)
+      .get('/tags/badId')
+      .then(res => {
+        expect(res.status).toEqual(500);
+        expect(res.body).toEqual({ error: expect.any(String) });
       });
   });
 });
