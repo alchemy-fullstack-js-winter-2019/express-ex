@@ -99,3 +99,12 @@ it('can send a tweet', () => {
       expect(res.body).toEqual({ handle: 'abel', text: 'is this how i tweet', _id: expect.any(String) });
     });
 });
+
+it('errors when there is no tweet with an id', () => {
+  return request(app)
+  .get('/tweets/badId')
+  .then(res => {
+    expect(res.status).toEqual(500);
+    expect(res.body).toEqual({ error: expect.any(String) });
+  });
+});
