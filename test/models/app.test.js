@@ -87,3 +87,10 @@ it('sends a tweet', () => {
       expect(res.body).toEqual({ handle: 'marcy', text: 'first tweet', _id: expect.any(String) });
     });
 });
+it('errors when there is no tweet', () => {
+  return request(app) 
+    .get('/tweets/badId')
+    .then(res => {
+      expect(res.status).toEqual(500);
+    });
+});
