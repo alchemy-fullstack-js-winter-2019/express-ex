@@ -42,8 +42,8 @@ describe('tweets test', () => {
       });
   });
   it('gets a tweet by id', () => {
-    return createTweet('tweet 1', 'I am a tweet')
-      .then((createdTweet) => {
+    return createTweet('tweet 1', 'I am a tweet') //creating a tweet that we can get by id
+      .then((createdTweet) => { //(tweet => {then we try to get the tweet by id
         const id = createdTweet._id;
         return request(app)
           .get(`/tweets/${id}`);
@@ -54,6 +54,14 @@ describe('tweets test', () => {
           text: 'I am a tweet',
           _id: expect.any(String)
         });
+      });
+  });
+  it('errors when no tweet with id', () => {
+    return request(app)
+      .get('/tweets/badId')
+      .then(res => {
+        expect(res.status).toEqual(500);
+        expect(res.body).toEqual({ error: 'Bad Id: badId' });
       });
   });
   it('gets a list of tweets', () => {
@@ -69,17 +77,17 @@ describe('tweets test', () => {
   });
   // To Do
   // it('finds a tweet and updates', () => {
-  //   return createTweet('tweet 2', 'Tweet typo')
-  //     .then((createdTweet) => {
+  //   return createTweet('twets')
+  //     .then((createdTweet) => { //tweet
   //       const id = createdTweet._id;
   //       return request(app)
   //         .put(`/tweets/${id}`)
-  //         .send({
+  //         .send({ //send the updated object
   //           handle: 'tweet 2',
-  //           text: 'Updated tweets are working'
+  //           text: 'a tweet'
   //         })
   //         .then(res => {
-  //           expect(res.body).toEqual({
+  //           expect(res.body.text).toEqual({ //' a tweet
   //             handle: 'tweet 2',
   //             text: 'Update tweets are working',
   //             _id: expect.any(String)
@@ -87,5 +95,14 @@ describe('tweets test', () => {
   //         });
   //     });
   // });
+
+
+  it('can delete a tweet', () => {
+    return createTweet('Tweet')
+      .then(tweet => {
+        return request(app)
+          .delete(`/tweets/${tweet._id}`);
+      });
+  });
 });
 
