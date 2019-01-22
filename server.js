@@ -1,8 +1,5 @@
-const http = require('http');
-const app = require('./lib/app')
-
-
+const app = require('./lib/app');
 
 app.listen(7890, () => {
-  console.log()
-})
+  console.log('Listening on 7890');
+});

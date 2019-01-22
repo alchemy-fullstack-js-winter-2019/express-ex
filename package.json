@@ -5,6 +5,9 @@
   "main": "express.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "npm run test -- --watch",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -24,5 +27,7 @@
     "nodemon": "^1.18.9",
     "supertest": "^3.4.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "shortid": "^2.2.14"
+  }
 }
