@@ -3,13 +3,12 @@ const app = require('../../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
-const createTweet = handle => {
+const createTweet = (text, handle = 'ryan') => {
   return request(app)
     .post('/tweets')
     .send({
       handle,
-      text: 'my first tweet',
-      _id: expect.any(String)
+      text,
     })
     .then(res => res.body);
 };
@@ -39,6 +38,7 @@ describe('tweets', () => {
         });
       });
   });
+
   it('gets a list of tweets from our db', () => {
     const tweetsToCreate = ['tweet A', 'tweet B', 'tweet C', 'tweet D'];
     return Promise.all(tweetsToCreate.map(createTweet))
@@ -50,46 +50,55 @@ describe('tweets', () => {
         expect(body).toHaveLength(4);
       });
   });
+
   it('gets a tweet by id', () => {
-    return createTweet('mac')
+    return createTweet('my first tweet')
       .then(createdTweet => {
-        const _id = createdTweet._id;
-        return request(app)
-          .get(`/tweets/${_id}`)
-          .then(res => {
-            expect(res.body).toEqual({
-              handle: 'mac',
-              text: 'my first tweet',
-              _id: _id
-            });
-          });
+        return Promise.all([
+          Promise.resolve(createdTweet._id),
+          request(app)
+            .get(`/tweets/${createdTweet._id}`)
+        ]);
+      })
+      .then(([_id, res]) => {
+        expect(res.body).toEqual({
+          text: 'my first tweet',
+          handle: 'ryan',
+          _id
+        });
       });
   });
 });
+
 it('updates a tweet by id', () => {
-  return createTweet('mac')
+  return createTweet('not updated')
     .then(createdTweet => {
       const _id = createdTweet._id;
       return request(app)
         .put(`/tweets/${_id}`)
-        .send({ handle: 'mac', text: 'updated' })
-        .then(res => {
-          expect(res.body).toEqual({
-            handle: 'mac',
-            text: 'updated',
-            _id: _id
-          });
-        });
+        .send({ ...createdTweet, text: 'updated' });
+    })
+    .then(res => {
+      expect(res.body.text).toEqual('updated');
     });
 });
+
 it('deletes a tweet by id', () => {
-  return createTweet('mac')
+  return createTweet('my tweet')
     .then(createdTweet => {
-      const _id = createdTweet._id;
       return request(app)
-        .delete(`/tweets/${_id}`)
-        .then(res => {
-          expect(res.body).toEqual({ deleted: 1 });
-        });
+        .delete(`/tweets/${createdTweet._id}`);
+    })
+    .then(res => {
+      expect(res.body).toEqual({ deleted: 1 });
     });
 });
+
+// it('errs when there is no tweet with an id', () => {
+//   return request(app)
+//     .get('/tweets/badId')
+//     .then(res => {
+//       expect(res.status).toEqual(400);
+//       expect(res.body).toEqual({ error: 'Bad Id: badId' });
+//     });
+// });
