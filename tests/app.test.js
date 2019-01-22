@@ -28,15 +28,15 @@ describe('tweets', () => {
 
   it('gets a tweet', () => {
     return request(app)
-      .get('/tweets/abcd')
+      .get('/tweets/')
       .then(res => {
-        expect(res.text).toEqual('abcd');
+        expect(res.text).toEqual('');
       });
   });
 });
 
 it('gets a tweet by id', () => {
-  return createTweet('abel1')
+  return createTweet('my first tweet')
     .then(createdTweet => {
       const _id = createdTweet._id;
       return request(app)
@@ -44,8 +44,8 @@ it('gets a tweet by id', () => {
     })
     .then(res => {
       expect(res.body).toEqual({
-        handle: 'abel1',
-        text: 'hi tweet'
+        id: _id,
+        text: 'my first tweet'
       });
     });
 });
@@ -58,12 +58,21 @@ it('gets a list of tweets', () => {
         .get('/tweets');
     })
     .then(({ body }) => {
-      expect(body).toHaveLength(3);
+      expect(body).toEqual({ handle: 'abel1', text: 'hello', _id: expect.any(String) });
     });
 });
 
 it('gets a tweet by id and updates', () => {
-
+  return createTweet('a tweet')
+    .then(tweet => {
+      const id = tweet._id;
+      return request(app)
+        .put(`/tweets/${id}`)
+        .send({ ...tweet, text: 'a tweet' });
+    })
+    .then(res => {
+      expect(res.body.text).toEqual('a tweet');
+    });
 });
 
 
@@ -74,7 +83,7 @@ it('gets a tweet by id and deletes', () => {
       return request(app)
         .delete(`/tweets/${id}`)
         .then(res => {
-          expect(res.status).toEqual(404);
+          expect(res.body).toEqual({ deleted: 1 });
         });
     });
 });
