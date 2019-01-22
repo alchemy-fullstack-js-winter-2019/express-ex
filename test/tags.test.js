@@ -78,7 +78,7 @@ describe('tags', () => {
       .then(createdTags => {
         const id = createdTags._id;
         return request(app)
-          .del(`/tags/${id}`);
+          .delete(`/tags/${id}`);
       })
       .then(res => {
         expect(res.body).toEqual({ 'deleted': 1 });

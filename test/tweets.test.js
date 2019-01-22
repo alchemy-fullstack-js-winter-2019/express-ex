@@ -81,7 +81,7 @@ describe('tweets', () => {
       .then(createdTweets => {
         const id = createdTweets._id;
         return request(app)
-          .del(`/tweets/${id}`);
+          .delete(`/tweets/${id}`);
       })
       .then(res => {
         expect(res.body).toEqual({ 'deleted': 1 });
