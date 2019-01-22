@@ -90,4 +90,16 @@ describe('tweets', () => {
       });
   });
 
+  it('retrieves a tweet by :id, delete, and return the delete count', () => {
+    return createTweet('alo')
+      .then(createdTweet => {
+        const _id = createdTweet._id;
+        return request(app)
+          .delete(`/tweets/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+      });
+  });
+
 });
