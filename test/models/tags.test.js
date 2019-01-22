@@ -54,7 +54,6 @@ describe('tweets', () => {
   it('gets a tag by id', () => {
     return makeTag('hashtag')
       .then(newTag => {
-        console.log(newTag);
         const id = newTag._id;
         return request(app)
           .get(`/tags/${id}`);
