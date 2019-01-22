@@ -1,19 +1,30 @@
 const request = require('supertest');
 const app = require('../lib/app');
-// const mkdirp = require('mkdirp');
-// const rimraf = require('rimraf');
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
+
+const makeTweet = text => {
+  return request(app)
+    .post('/tweets')
+    .send({ 
+      handle: 'ryan', 
+      text, 
+      _id: 1234
+    })
+    .then(res => res.body);
+};
 
 describe('tweets', () => {
-  // beforeEach(done => {
-  //   rimraf('./data/tweets', err => {
-  //     done(err);
-  //   });
-  // });
-  // beforeEach(done => {
-  //   mkdirp('/data/tweets', err => {
-  //     done(err);
-  //   });
-  // });
+  beforeEach(done => {
+    rimraf('./data/tweets', err => {
+      done(err);
+    });
+  });
+  beforeEach(done => {
+    mkdirp('/data/tweets', err => {
+      done(err);
+    });
+  });
 
   it('creates and reads a tweet', () => {
     return request(app)
@@ -29,4 +40,17 @@ describe('tweets', () => {
         });
       });
   });
+
+  it('gets all tweets', () => {
+    const testList = ['tweet1', 'tweet2', 'tweet3'];
+    return Promise.all(testList.map(makeTweet))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      }) 
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
+      });
+  });
 });
+
