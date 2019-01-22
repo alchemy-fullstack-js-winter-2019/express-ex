@@ -3,29 +3,27 @@ const app = require('../lib/app');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
-const createTweet = (handle) => {
-  return request(app)
-    .post('/tweets')
-    .send({
-      handle: handle,
-      tweet: 'test tweet'
-    })
-    .then(res => res.body);
-};
-
 describe('tweets', () => {
+
+  const createTweet = (text, handle = 'ryan') => {
+    return request(app)
+      .post('/tweets')
+      .send({ handle, text })
+      .then(res => res.body);
+  };
+  // checked
   beforeEach(done => {
     rimraf('./data/tweets', err => {
       done(err);
     });
   });
-
+  // checked
   beforeEach(done => {
     mkdirp('./data/tweets', err => {
       done(err);
     });
   });
-  
+  // checked
   it('creates a new tweet', () => {
     return request(app)
       .post('/tweets')
@@ -38,34 +36,36 @@ describe('tweets', () => {
         });
       });
   });
-
+  // checked
   it('gets a list of all the tweets', () => {
-    const handlesToMake = ['connor1', 'connor2', 'connor3'];
-    return Promise.all(handlesToMake.map(createTweet))
+    return Promise.all(['hi', 'a tweet'].map(createTweet))
       .then(() => {
         return request(app)
           .get('/tweets');
       })
       .then(res => {
-        expect(res.body).toHaveLength(3);
+        expect(res.body).toHaveLength(2);
       });
   });
-
+  // checked
   it('gets a tweet by id', () => {
     return createTweet('my first tweet')
       .then(tweet => {
-        return request(app)
-          .get(`/tweets/${tweet._id}`);
+        return Promise.all([
+          Promise.resolve(tweet._id),
+          request(app)
+            .get(`/tweets/${tweet._id}`)
+        ]);
       })
-      .then(res => {
+      .then(([_id, res]) => {
         expect(res.body).toEqual({
           test: 'my first tweet',
           handle: 'ryan',
-          _id: expect.any(String)
+          _id
         });
       });
   });
-
+  // checked
   it('errors when there is no tweet with an id', () => {
     return request(app)
       .get('/tweets/badId')
@@ -74,17 +74,14 @@ describe('tweets', () => {
         expect(res.body).toEqual({ error: 'Bad Id: badId' });
       });
   });
-
+  // checked
   it('can update a tweet', () => {
     return createTweet('a twet')
       .then((tweet => {
         const id = tweet._id;
         return request(app)
           .put(`/tweets/${id}`)
-          .send({
-            ...tweet,
-            text: 'a tweet'
-          });
+          .send({ ...tweet, text: 'a tweet' });
       }))
       .then(res => {
         expect(res.body.text).toEqual('a tweet');
@@ -102,5 +99,3 @@ describe('tweets', () => {
       });
   });
 });
-
-// In the tests, how and when do I know to use the different route methods (post, send, get, then, etc)
