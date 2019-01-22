@@ -24,21 +24,37 @@ describe('tweets', () => {
   //   });
   // });
 
-  //return Promise.all(['hi', 'bye'].map(createdTweet));
-
-  it('gets a tweet', () => {
+  it('creates and reads a tweet by ID', () => {
     return request(app)
       .post(('/tweets/abcd'), (req, res) => {
         req.send({ 
           handle: 'ryan', 
-          text: 'You got it by ID' 
+          text: 'You created and read a tweet by ID', 
+          _id: 1234
         });
-        res.get('/tweets/abcd')
-          .then(res => {
-            expect(res.text).toEqual('abcd');
-          });
+        res.get('/tweets/abcd');
+        res.then(res => {
+          expect(res.body).toEqual({ handle: 'ryan', text: 'You created and read a tweet by ID', _id: 1234 });
+        });
       });
   });
+
+
+  //return Promise.all(['hi', 'bye'].map(createdTweet));
+
+  // it('gets a tweet', () => {
+  //   return request(app)
+  //     .post(('/tweets/abcd'), (req, res) => {
+  //       req.send({ 
+  //         handle: 'ryan', 
+  //         text: 'You got it by ID' 
+  //       });
+  //       res.get('/tweets/abcd')
+  //         .then(res => {
+  //           expect(res.text).toEqual('abcd');
+  //         });
+  //     });
+  // });
 
   // it('gets a tweet by id', () => {
   //   return request(app)
