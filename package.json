@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "superagent": "^4.1.0"
   }
 }
