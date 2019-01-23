@@ -8,11 +8,6 @@ describe('tweets', () => {
     return request(app)
       .post('/tweets')
       .send({ handle, text })
-      // .send({ 
-      //   handle: 'ryan', 
-      //   text, 
-      //   _id: 1234
-      // })
       .then(res => res.body);
   };
   beforeEach(done => {
@@ -57,17 +52,18 @@ describe('tweets', () => {
         });
       });
   });
+  it('gets all tweets', () => {
+    const testList = ['tweet1', 'tweet2', 'tweet3'];
+    return Promise.all(testList.map(makeTweet))
+      .then(() => {
+        return request(app)
+          .get('/tweets');
+      }) 
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
+      });
+  });
 });
 
-// it('gets all tweets', () => {
-//   const testList = ['tweet1', 'tweet2', 'tweet3'];
-//   return Promise.all(testList.map(makeTweet))
-//     .then(() => {
-//       return request(app)
-//         .get('/tweets');
-//     }) 
-//     .then(({ body }) => {
-//       expect(body).toHaveLength(3);
-//     });
-// });
+
 
