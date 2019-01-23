@@ -1,0 +1,40 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "eslint": "^5.12.1",
+    "express": "^4.16.4",
+    "init": "^0.1.2",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "shortid": "^2.2.14",
+    "supertest": "^3.4.1"
+  },
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.3"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch --verbose",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zilula/express-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zilula/express-ex/issues"
+  },
+  "homepage": "https://github.com/Zilula/express-ex#readme"
+}
