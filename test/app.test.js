@@ -27,7 +27,7 @@ describe('tweets', () => {
 //   });
 
   it('gets a tweet by id', () => {
-    return makeTweet('Test Tweet')
+    return makeTweet('You got it by ID')
       .then(({ _id }) => {
         return Promise.all([
           Promise.resolve(_id),
@@ -70,5 +70,4 @@ describe('tweets', () => {
 //       expect(body).toHaveLength(3);
 //     });
 // });
-
 
