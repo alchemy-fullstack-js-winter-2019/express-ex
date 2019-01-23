@@ -75,26 +75,26 @@ describe('tweets test', () => {
         expect(body).toHaveLength(4);
       }); 
   });
-  // To Do
-  // it('finds a tweet and updates', () => {
-  //   return createTweet('twets')
-  //     .then((createdTweet) => { //tweet
-  //       const id = createdTweet._id;
-  //       return request(app)
-  //         .put(`/tweets/${id}`)
-  //         .send({ //send the updated object
-  //           handle: 'tweet 2',
-  //           text: 'a tweet'
-  //         })
-  //         .then(res => {
-  //           expect(res.body.text).toEqual({ //' a tweet
-  //             handle: 'tweet 2',
-  //             text: 'Update tweets are working',
-  //             _id: expect.any(String)
-  //           });
-  //         });
-  //     });
-  // });
+ 
+  it('finds a tweet and updates', () => {
+    return createTweet('TweetTypo')
+      .then((createdTweet) => { //tweet
+        const id = createdTweet._id;
+        return request(app)
+          .put(`/tweets/${id}`)
+          .send({ //send the updated object
+            handle: 'tweet 2',
+            text: 'Tweet'
+          })
+          .then(res => {
+            expect(res.body.text).toEqual({ //' a tweet
+              handle: 'tweet 2',
+              text: 'Tweet',
+              _id: expect.any(String)
+            });
+          });
+      });
+  });
 
 
   it('can delete a tweet', () => {
@@ -102,6 +102,9 @@ describe('tweets test', () => {
       .then(tweet => {
         return request(app)
           .delete(`/tweets/${tweet._id}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
       });
   });
 });
