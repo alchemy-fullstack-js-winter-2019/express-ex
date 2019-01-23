@@ -40,18 +40,19 @@ describe('tweets', () => {
 
   it('creates and reads a tweet', () => {
     return request(app)
-      .post(('/tweets/abcd'), (req, res) => {
+      .post(('/tweets'), (req, res) => {
         req.send({ 
           handle: 'ryan', 
           text: 'You created and read a tweet', 
           _id: 1234
         });
-        res.get('/tweets/abcd');
+        res.get('/tweets');
         res.then(res => {
           expect(res.body).toEqual({ handle: 'ryan', text: 'You created and read a tweet', _id: 1234 });
         });
       });
   });
+
   it('gets all tweets', () => {
     const testList = ['tweet1', 'tweet2', 'tweet3'];
     return Promise.all(testList.map(makeTweet))
@@ -63,6 +64,27 @@ describe('tweets', () => {
         expect(body).toHaveLength(3);
       });
   });
+
+  it('updates and reads a tweet by ID', () => {
+    return makeTweet('You have not updated your tweet')
+      .then(tweet => {
+        const id = tweet._id;
+        return request(app)
+          .put(`/tweets/${id}`)
+          .send({ handle: 'ryan', text: 'You updated your tweet' });
+      })
+      .then(res => {
+        expect(res.body).toEqual({ handle: 'ryan', text: 'You updated your tweet', id: 'any' });
+      });
+    // .then(([tweet._id, res]) => {
+    //   expect(res.body).toEqual({ 
+    //     handle: 'ryan', 
+    //     text: 'You updated your tweet', 
+    //     _id 
+    //   });
+    // });      
+  });
+
 });
 
 
