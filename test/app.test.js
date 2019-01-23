@@ -41,14 +41,13 @@ describe('tweets', () => {
   });
 
   it('gets a list of tweets', () => {
-    const tweetsToCreate = ['yo!', 'Ayyyy', 'Hello', 'Banana!'];
-    return Promise.all(tweetsToCreate.map(createTweet))
+    return Promise.all(['yo!', 'hello!', 'hey buddy!'].map(createTweet))
       .then(() => {
         return request(app)
           .get('/tweets');
       }) 
-      .then(({ body }) => {
-        expect(body).toHaveLength(4);
+      .then(res => {
+        expect(res.body).toHaveLength(3);
       });
   });
 
@@ -63,44 +62,39 @@ describe('tweets', () => {
       })
       .then(([_id, res]) => {
         expect(res.body).toEqual({
-          handle: 'ivan',
           text: 'What up!',
+          handle: 'ivan',
           _id
         });
       });
   });
 
-  it('errors when there is not tweet with an id', () => {
-    return request(app)
-      .get('/tweets/badId')
-      .then(res => {
-        expect(res.status).toEqual(400);
-        expect(res.body).toEqual({ error: 'Bad Id: badId' });
-      });
-  });
     
-  it('can update a tweet', () => {
-    return createTweet('a tweet')
-      .then(tweet => {
-        const id = tweet._id;
+  it('can find a tweet by id and update', () => {
+    return createTweet('helo!')
+      .then(createdTweet => {
+        const id = createdTweet._id;
         return request(app)
           .put(`/tweets/${id}`)
-          .send({ ...tweet, text: 'a tweet' });
-      })
-      .then(res => {
-        expect(res.body.text).toEqual('a tweet');
+          .send({ 
+            handle: 'ivan',
+            text: 'hello!', 
+            _id: expect.any(String) 
+          })
+          .then(res => {
+            expect(res.body.text).toEqual('hello!');
+          });
       });
   });
 
   it('can delete a tweet', () => {
-    return createTweet('a tweet')
-      .then(tweet => {
+    return createTweet('hello!')
+      .then(createdTweet => {
         return request(app)
-          .delete(`/tweets/${tweet._id}`);
+          .delete(`/tweets/${createdTweet._id}`);
       })
       .then(res => {
         expect(res.body).toEqual({ deleted: 1 });
       });
   });
 });
-
