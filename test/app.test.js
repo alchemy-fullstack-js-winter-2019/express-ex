@@ -59,7 +59,7 @@ describe('tweets', () => {
       })
       .then(([_id, res]) => {
         expect(res.body).toEqual({
-          test: 'my first tweet',
+          text: 'my first tweet',
           handle: 'ryan',
           _id
         });
