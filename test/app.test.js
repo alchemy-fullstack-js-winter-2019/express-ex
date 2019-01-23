@@ -1,41 +1,41 @@
 const request = require('supertest');
 const app = require('../lib/app');
-// const mkdirp = require('mkdirp');
-// const rimraf = require('rimraf');
-
-const makeTweet = text => {
-  return request(app)
-    .post('/tweets')
-    .send({ 
-      handle: 'ryan', 
-      text, 
-      _id: 1234
-    })
-    .then(res => res.body);
-};
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
 
 describe('tweets', () => {
-//   beforeEach(done => {
-//     rimraf('./data/tweets', err => {
-//       done(err);
-//     });
-//   });
-//   beforeEach(done => {
-//     mkdirp('/data/tweets', err => {
-//       done(err);
-//     });
-//   });
+  const makeTweet = (text, handle = 'ryan') => {
+    return request(app)
+      .post('/tweets')
+      .send({ handle, text })
+      // .send({ 
+      //   handle: 'ryan', 
+      //   text, 
+      //   _id: 1234
+      // })
+      .then(res => res.body);
+  };
+  beforeEach(done => {
+    rimraf('./data/tweets', err => {
+      done(err);
+    });
+  });
+  beforeEach(done => {
+    mkdirp('./data/tweets', err => {
+      done(err);
+    });
+  });
 
   it('gets a tweet by id', () => {
     return makeTweet('You got it by ID')
-      .then(({ _id }) => {
+      .then(tweet => {
         return Promise.all([
-          Promise.resolve(_id),
-          request(app).get(`/tweets/${_id}`)
+          Promise.resolve(tweet._id),
+          request(app).get(`/tweets/${tweet._id}`)
         ]);
       })
-      .then(([_id, { body }]) => {
-        expect(body).toEqual({
+      .then(([_id, res]) => {
+        expect(res.body).toEqual({
           handle: 'ryan',
           text: 'You got it by ID',
           _id
