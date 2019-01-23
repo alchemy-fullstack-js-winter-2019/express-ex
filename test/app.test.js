@@ -11,19 +11,19 @@ describe('tweets', () => {
       .send({ handle, text })
       .then(res => res.body);
   };
-  // checked
+  
   beforeEach(done => {
     rimraf('./data/tweets', err => {
       done(err);
     });
   });
-  // checked
+  
   beforeEach(done => {
     mkdirp('./data/tweets', err => {
       done(err);
     });
   });
-  // checked
+  
   it('creates a new tweet', () => {
     return request(app)
       .post('/tweets')
@@ -36,7 +36,7 @@ describe('tweets', () => {
         });
       });
   });
-  // checked
+  
   it('gets a list of all the tweets', () => {
     return Promise.all(['hi', 'a tweet'].map(createTweet))
       .then(() => {
@@ -47,7 +47,7 @@ describe('tweets', () => {
         expect(res.body).toHaveLength(2);
       });
   });
-  // checked
+  
   it('gets a tweet by id', () => {
     return createTweet('my first tweet')
       .then(tweet => {
@@ -65,7 +65,7 @@ describe('tweets', () => {
         });
       });
   });
-  // checked
+  
   it('errors when there is no tweet with an id', () => {
     return request(app)
       .get('/tweets/badId')
@@ -74,7 +74,7 @@ describe('tweets', () => {
         expect(res.body).toEqual({ error: 'Bad Id: badId' });
       });
   });
-  // checked
+  
   it('can update a tweet', () => {
     return createTweet('a twet')
       .then((tweet => {
