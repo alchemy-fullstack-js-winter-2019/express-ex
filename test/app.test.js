@@ -1,4 +1,4 @@
-const app = require('../../lib/app');
+const app = require('../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const request = require('supertest');
