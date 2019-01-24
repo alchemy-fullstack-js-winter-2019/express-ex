@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "pretest": "npm run lint",
     "start": "nodemon server.js"
-
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
   },
   "homepage": "https://github.com/deetolman/express-ex#readme",
   "devDependencies": {
+    "eslint": "^5.12.1",
     "jest": "^23.6.0",
     "nodemon": "^1.18.9",
     "supertest": "^3.4.1"

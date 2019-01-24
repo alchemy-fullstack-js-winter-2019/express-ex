@@ -3,17 +3,17 @@ const rimraf = require('rimraf');
 const request = require('supertest');
 const app = require('../lib/app');
 
-const createTweet = (handle, text) => {
-  return request(app)
-    .post('/tweets')
-    .send({
-      handle,
-      text
-    })
-    .then(res => res.body);
-};
-
 describe('tweets tests', () => {
+  const createTweet = (handle, text) => {
+    return request(app)
+      .post('/tweets')
+      .send({
+        handle,
+        text
+      })
+      .then(res => res.body);
+  };
+
   beforeEach(done => {
     rimraf('./data/tweets', err => {
       done(err);
@@ -49,6 +49,16 @@ describe('tweets tests', () => {
           expect(res.body).toEqual({ handle:'tweet1', text: 'I am a tweet', _id: expect.any(String) });
         });
     });
+
+    it('errors when there is no tweet with id', () => {
+      return request(app)
+        .get('/tweets/badId')
+        .then(res => {
+          expect(res.status).toEqual(400);
+          expect(res.body).toEqual({ error: 'Bad Id: badId' });
+        });
+    });
+
     it('gets a list of tweets from db', () => {
       const tweetsToCreate = ['tweet1', 'tweet2', 'tweet3'];
       return Promise.all(tweetsToCreate.map(createTweet))
@@ -60,6 +70,7 @@ describe('tweets tests', () => {
           expect(body).toHaveLength(3);
         });
     });
+
     it('gets a tweet by id and update', () => {
       return createTweet('tweet tweet')
         .then(createdTweet => {
