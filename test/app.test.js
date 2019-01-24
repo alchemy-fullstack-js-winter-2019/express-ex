@@ -1,7 +1,7 @@
+const app = require('../../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const request = require('supertest');
-const app = require('../lib/app');
 
 const createTweet = (handle, text) => {
   return request(app)
@@ -56,6 +56,7 @@ describe('tweets test', () => {
         });
       });
   });
+  //TODO
   // it('errors when no tweet with id', () => {
   //   return request(app)
   //     .get('/tweets/badId')
