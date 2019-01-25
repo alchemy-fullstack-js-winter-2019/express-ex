@@ -13,6 +13,7 @@ const createTweet = handle => {
     .then(res => res.body);
 };
 
+
 describe('tweets', () => {
   beforeEach(done => {
     rimraf('./data/tweets', err => {
@@ -25,14 +26,6 @@ describe('tweets', () => {
       done(err);
     });
   });
-
-  // it('gets a tweet', () => {
-  //   return request(app)
-  //     .get('/tweets/abcd')
-  //     .then(res => {
-  //       expect(res.text).toEqual('abcd');
-  //     });
-  // });
 
   it('creates a new tweet', () => {
     return request(app)
@@ -108,6 +101,33 @@ describe('tweets', () => {
       .then(res => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({ error: 'Bad Id' });
+      });
+  });
+});
+
+// Tags Tests Here
+
+describe('tags', () => {
+  beforeEach(done => {
+    rimraf('./data/tags', err => {
+      done(err);
+    });
+  });
+
+  beforeEach(done => {
+    mkdirp('./data/tags', err => {
+      done(err);
+    });
+  });
+
+  it('creates a new tag', () => {
+    return request(app)
+      .post('/tweets')
+      .send({ name: '#carmen', _id: '123' })
+      .then(res => {
+        expect(res.body).toEqual({
+          name: '#carmen', _id: expect.any(String) 
+        });
       });
   });
 
