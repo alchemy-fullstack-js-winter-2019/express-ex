@@ -107,6 +107,7 @@ describe('tweets', () => {
 
 // Tags Tests Here
 
+
 describe('tags', () => {
   beforeEach(done => {
     rimraf('./data/tags', err => {
@@ -122,7 +123,7 @@ describe('tags', () => {
 
   it('creates a new tag', () => {
     return request(app)
-      .post('/tweets')
+      .post('/tags')
       .send({ name: '#carmen', _id: '123' })
       .then(res => {
         expect(res.body).toEqual({
