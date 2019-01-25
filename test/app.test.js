@@ -3,27 +3,24 @@ const app = require('../lib/app');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
-const createTweet = (handle) => {
-  return request(app)
-    .post('/tweets')
-    .send({
-      handle,
-      text: 'rowboat'
-    })
-    .then(res => res.body);
-};
+describe('tweets', () => {
+
+  const createTweet = (text, handle = 'jei1') => {
+    return request(app)
+      .post('/tweets')
+      .send({ handle, text: 'rowboat' })
+      .then(res => res.body);
+  };
 
 const createHashtag = (name) => {
   return request(app)
     .post('/tags')
-    .send({
-      name
-    })
+    .send({ name })
     .then(res => res.body);
 };
 
 describe('routes', () => {
-  beforeAll(done => {
+  beforeEach(done => {
     mkdirp('./data/tweets', done);
     mkdirp('./data/tags', done);
     done();
@@ -52,14 +49,14 @@ describe('routes', () => {
       });
   });
 
-  it('gets all the tweets', () => {
-    const tweetsToCreate = ['jei1', 'jeie2', 'jei3'];
+  it('gets list of tweets', () => {
+    const tweetsToCreate = ['jei1', 'jei2', 'jei3'];
     return Promise.all(tweetsToCreate.map(createTweet))
       .then(() => {
         return request(app)
           .get('/tweets')
-          .then(({ body }) => {
-            expect(body).toHaveLength(3);
+          .then(res => {
+            expect(res.body).toHaveLength(3);
           });
       });
   });
@@ -79,7 +76,7 @@ describe('routes', () => {
       });
   });
 
-  it('updates a tweet with :id and returns the update', () => {
+  it('updates a tweet', () => {
     let newTweet = {
       handle: 'hi',
       text: 'test'
@@ -89,7 +86,7 @@ describe('routes', () => {
         const _id = createdTweet._id;
         return request(app)
           .put(`/tweets/${_id}`)
-          .send(newTweet);
+          .send({ newTweet, text: 'test' });
       })
       .then(res => {
         expect(res.body.handle).toEqual('h');
@@ -98,12 +95,12 @@ describe('routes', () => {
 
   it('can delete a tweet', () => {
     return createTweet('gotobed')
-      .then(res => {
+      .then(tweet => {
         return request(app)
-          .delete(`/tweets/${res._id}`);
+          .delete(`/tweets/${tweet._id}`);
       })
-      .then(({ body }) => {
-        expect(body).toEqual({ deleted: 1 });
+      .then(res => {
+        expect(res.body).toEqual({ deleted: 1 });
       });
   });
 
@@ -133,7 +130,7 @@ it('creates a new hashtag', () => {
     });
 });
 
-it('can get all tags', () => {
+it('can get list of tags', () => {
   const tagsToCreate = ['#westside', '#tired', '#gotobed', '#2pac'];
   return Promise.all(tagsToCreate.map(createHashtag))
     .then(() => {
@@ -159,7 +156,7 @@ it('can get tag by id', () => {
     });
 });
 
-it('update tag with :id and return update', () => {
+it('update tag with :id', () => {
   let newTag = { name: '#jeiz' };
   return createHashtag('#tired')
     .then(createdTag => {
@@ -179,7 +176,7 @@ it('can delete tag', () => {
       return request(app)
         .delete(`/tags/${res._id}`);
     })
-    .then(({ body }) => {
-      expect(body).toEqual({ deleted: 1 });
+    .then(res => {
+      expect(res.body).toEqual({ deleted: 1 });
     });
 });
