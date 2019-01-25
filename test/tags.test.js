@@ -3,7 +3,6 @@ const app = require('../lib/app');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
-///testing for Tags
 const CreateTag = text => {
   return request(app)
     .post('/tags')
