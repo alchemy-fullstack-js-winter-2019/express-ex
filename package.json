@@ -1,0 +1,34 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/averagegalmarcy/express-ex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/averagegalmarcy/express-ex/issues"
+  },
+  "homepage": "https://github.com/averagegalmarcy/express-ex#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "jest": "^23.6.0",
+    "supertest": "^3.4.1"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
+    "shortid": "^2.2.14"
+  }
+}
