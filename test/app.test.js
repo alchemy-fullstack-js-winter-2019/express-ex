@@ -14,6 +14,8 @@ const createTweet = handle => {
 };
 
 
+
+
 describe('tweets', () => {
   beforeEach(done => {
     rimraf('./data/tweets', err => {
@@ -107,6 +109,16 @@ describe('tweets', () => {
 
 // Tags Tests Here
 
+const createTag = name => {
+  return request(app)
+    .post('/tags')
+    .send({
+      name,
+      _id: '123'
+    })
+    .then(res => res.body);
+};
+
 
 describe('tags', () => {
   beforeEach(done => {
@@ -129,6 +141,18 @@ describe('tags', () => {
         expect(res.body).toEqual({
           name: '#carmen', _id: expect.any(String) 
         });
+      });
+  });
+
+  it('gets a list of tags', () => {
+    const tagsToCreate = ['carmen1', 'carmen2', 'carmen3'];
+    return Promise.all(tagsToCreate.map(createTag))
+      .then(() => {
+        return request(app)
+          .get('/tags');
+      })
+      .then(({ body }) => {
+        expect(body).toHaveLength(3);
       });
   });
 
