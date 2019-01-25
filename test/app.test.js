@@ -156,4 +156,19 @@ describe('tags', () => {
       });
   });
 
+  it('gets a tag by id', () => {
+    return createTag('carmen1')
+      .then(tagCreated => {
+        const _id = tagCreated._id;
+        return request(app)
+          .get(`/tags/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({
+              name: '#carmen1', 
+              _id  
+            });
+          });
+      });
+  });
+
 });
