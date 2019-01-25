@@ -164,7 +164,7 @@ describe('tags', () => {
           .get(`/tags/${_id}`)
           .then(res => {
             expect(res.body).toEqual({
-              name: '#carmen1', 
+              name: 'carmen1', 
               _id  
             });
           });
