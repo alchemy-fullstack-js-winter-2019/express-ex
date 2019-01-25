@@ -10,3 +10,14 @@ router()
   // .get('/', (req, res) => {
   //   res.end('root');
   // });
+
+
+////MIDDLEWARE
+app.use((req, res, nex) => {
+  console.log('requestIncoming);
+  req.someProp = 'hi'
+  next();
+})
+
+-rOUTES are also considered MIDDLEWARE
+- the 404 not found MIDDLEWARE is usually extracted from its own file. 

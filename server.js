@@ -1,3 +1,4 @@
+//NOTE: sets the server
 const app = require('./lib/app');
 
 app.get('/', (req, res)=> {
