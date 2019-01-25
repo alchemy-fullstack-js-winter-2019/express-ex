@@ -40,7 +40,7 @@ describe('tags', () => {
           _id: expect.any(String) });
       });
   });
-  it('gets all tags', ()=> {
+  it.only('gets all tags', ()=> {
     return Promise.all(['tag 1', 'tag 2', 'tag 3'].map(tags => {
       CreateTag(tags);
     }))
@@ -53,7 +53,7 @@ describe('tags', () => {
       });
   });
   //need to come back to this
-  it.only('gets tags by id', () => {
+  it('gets tags by id', () => {
     return CreateTag('#okayy')
       .then(newTag => {
         const id = newTag;
