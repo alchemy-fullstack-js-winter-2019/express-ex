@@ -171,4 +171,21 @@ describe('tags', () => {
       });
   });
 
+  it('gets tag by id and return the updated tag', () => {
+    const updatedTag = {
+      name: 'carmen',
+      _id: '123'
+    };
+    return createTag('#carmen')
+      .then(tagCreated => {
+        const _id = tagCreated._id;
+        return request(app)
+          .put(`/tags/${_id}`)
+          .send(updatedTag);
+      })
+      .then(res => {
+        expect(res.body.name).toEqual('carmen');
+      });
+  });
+
 });
