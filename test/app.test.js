@@ -188,4 +188,17 @@ describe('tags', () => {
       });
   });
 
+  it('gets a tag by :id, delete, and return the delete count', () => {
+    return createTag('#carmen')
+      .then(createdTag => {
+        const _id = createdTag._id;
+        return request(app)
+          .delete(`/tags/${_id}`)
+          .then(res => {
+            expect(res.body).toEqual({ deleted: 1 });
+          });
+      });
+  });
+
+
 });
