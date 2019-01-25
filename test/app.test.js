@@ -71,7 +71,7 @@ describe('tweets', () => {
           });
       });
   });
-  it('gets tweet by id', () => {
+  it.only('gets tweet by id', () => {
     return createTweet('huh')
       .then(newTweet => {
         const id = newTweet._id;

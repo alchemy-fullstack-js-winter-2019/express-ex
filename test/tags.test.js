@@ -4,17 +4,14 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
 ///testing for Tags
-const CreateTag = (tag, _id) => {
+const CreateTag = text => {
   return request(app)
     .post('/tags')
     .send({
-      tag: tag,
-      id: _id
+      name: '#okayy',
+      text: text
     })
-    .then((res) => {
-      res.body;
-      
-    });
+    .then(res => res.body);
 };
 describe('tags', () => {
   beforeEach((done) => {
@@ -31,7 +28,7 @@ describe('tags', () => {
     return request(app)
       .post('/tags')
       .send({
-        name: '#johnny',
+        name: '#johnny', text: 'text'
         
       })
       .then(res => {
@@ -40,7 +37,7 @@ describe('tags', () => {
           _id: expect.any(String) });
       });
   });
-  it.only('gets all tags', ()=> {
+  it('gets all tags', ()=> {
     return Promise.all(['tag 1', 'tag 2', 'tag 3'].map(tags => {
       CreateTag(tags);
     }))
@@ -53,10 +50,11 @@ describe('tags', () => {
       });
   });
   //need to come back to this
+ 
   it('gets tags by id', () => {
     return CreateTag('#okayy')
-      .then(newTag => {
-        const id = newTag;
+      .then(newT => {
+        const id = newT._id;
         return request(app)
           .get(`/tags/${id}`);
       })
@@ -67,6 +65,7 @@ describe('tags', () => {
         });
       });
   });
+
   it('find by Id an delete tag', () => {
     return CreateTag('#deleteThis')
       .then(deleteTag => {
