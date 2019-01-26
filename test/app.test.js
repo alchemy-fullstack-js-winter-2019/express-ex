@@ -12,13 +12,13 @@ describe('tweets', () => {
   };
 
   beforeEach(done => {
-    rimraf('./data/people', err => {
+    rimraf('./data/tweets', err => {
       done(err);
     });
   });
 
   beforeEach(done => {
-    mkdirp('./data/people', err => {
+    mkdirp('./data/tweets', err => {
       done(err);
     });
   });
