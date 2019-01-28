@@ -59,7 +59,7 @@ describe('tweets', () => {
       });
   });
 
-  it.only('gets a tweet by id and updates', () => {
+  it('gets a tweet by id and updates', () => {
     return createTweet('a tweet')
       .then(tweet => {
         const id = tweet._id;
@@ -73,7 +73,7 @@ describe('tweets', () => {
   });
 
 
-  it('gets a tweet by id and deletes', () => {
+  it.only('gets a tweet by id and deletes', () => {
     return createTweet('this will be deleted')
       .then(newTweet => {
         const id = newTweet._id;
