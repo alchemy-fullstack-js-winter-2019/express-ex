@@ -26,27 +26,21 @@ describe('tweets', () => {
     });
   }); 
 
-  it('gets a tweet', () => {
-    return request(app)
-      .get('/tweets/')
-      .then(res => {
-        expect(res.text).toEqual('');
-      });
-  });
 
   it('gets a tweet by id', () => {
     return createTweet('my first tweet')
       .then(createdTweet => {
         return Promise.all([
-          Promise.resolve(tweet._id),
+          Promise.resolve(createdTweet._id),
           request(app)
-            .get(`/tweets/${tweet._id}`)
+            .get(`/tweets/${createdTweet._id}`)
         ]);
       })
       .then(([_id, res]) => {
         expect(res.body).toEqual({
-          id: createdTweet._id,
-          text: 'my first tweet'
+          _id: _id,
+          text: 'my first tweet',
+          handle: 'abel'
         });
 
       });
@@ -61,11 +55,11 @@ describe('tweets', () => {
           .get('/tweets');
       })
       .then(({ body }) => {
-        expect(body).toEqual({ text: 'my first tweet', _id: expect.any(String) });
+        expect(body).toHaveLength(4);
       });
   });
 
-  it('gets a tweet by id and updates', () => {
+  it.only('gets a tweet by id and updates', () => {
     return createTweet('a tweet')
       .then(tweet => {
         const id = tweet._id;
