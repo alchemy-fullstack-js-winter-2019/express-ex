@@ -104,8 +104,7 @@ describe('tweets', () => {
     return request(app)
       .get('/tweets/badId')
       .then(res => {
-        expect(res.status).toEqual(400);
-        expect(res.body).toEqual({ error: 'Bad Id: badId' });
+        expect(res.status).toEqual(500);
       });
   });
 });
