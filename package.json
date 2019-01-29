@@ -1,0 +1,35 @@
+{
+  "name": "express-ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "pretest": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sophiegraham/express-ex.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sophiegraham/express-ex/issues"
+  },
+  "homepage": "https://github.com/sophiegraham/express-ex#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "express": "^4.16.4",
+    "jest": "^23.6.0",
+    "mkdirp": "^0.5.1",
+    "nodemon": "^1.18.9",
+    "rimraf": "^2.6.3",
+    "supertest": "^3.4.1"
+  },
+  "dependencies": {
+    "morgan": "^1.9.1",
+    "shortid": "^2.2.14"
+  }
+}
