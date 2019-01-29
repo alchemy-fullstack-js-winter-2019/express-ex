@@ -1,0 +1,36 @@
+router()
+.post()
+.put()
+.delete()
+
+  // .get('/:name', (req, res) => {
+  //   console.log(req.params);
+  //   res.end(req.params.name);
+  // })
+  // .get('/', (req, res) => {
+  //   res.end('root');
+  // });
+
+
+////MIDDLEWARE
+app.use((req, res, nex) => {
+  console.log('requestIncoming);
+  req.someProp = 'hi'
+  next();
+})
+
+-rOUTES are also considered MIDDLEWARE
+- the 404 not found MIDDLEWARE is usually extracted from its own file. 
+
+
+
+//MIDDLEWARE almost everything in express is middlewere, even our routes but they dont include the next method. 
+//THIS is a logger we can use the morgan framework instead
+// app.use((req, res, next) => {
+//   res.on('finish', () => {
+//     const responseTime = Date.now() = req.startTime;
+//     console.log(`${req.method} ${req.url} ${res.statusCode} - ${responseTime}ms`);
+
+//   });
+//   next();
+// });
